@@ -42,7 +42,7 @@ To leave the screen use `ctl + a + d` and to return use `screen -r JOBNAME`
   
 Results will be produced in `/gpfs/data/ris3/3_results/${YYYYMMDD}`
 
-# Example Usage
+## Example Usage
 ```
 sbatch /gpfs/data/ris3/0_data/gisaid_20220926/run_slurm.sh /gpfs/data/ris3/0_data/gisaid_20220926/sequenceData.fasta
 ```
