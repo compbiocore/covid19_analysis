@@ -1,4 +1,4 @@
-# Covid19 Docker Container
+# Covid19 Analysis Pipeline
 
 Template for analyses repositories. For more information see https://compbiocore-brown.slab.com/posts/data-organisation-for-analysis-repos-fdi2cddd. Folders that should be present in all such repositories are:
 
