@@ -1,15 +1,38 @@
-# Running
+## Running Pipeline via Oscar Slurm Batch Submission  
+  
+To run the covid pipeline, navigate to ```/gpfs/data/ris3/1_scripts/``` and run:   
+```
+sbatch /gpfs/data/ris3/0_data/gisaid_20220926/run_slurm.sh /gpfs/data/ris3/PATH/TO/SEQUENCE/DATA
+```  
+Results will be produced in ```/gpfs/data/ris3/3_results/${YYYYMMDD}```
 
-The `run.sh` script and usage instructions are modified from the one included in https://github.com/kantorlab/covid-pipeline to account for updates to Nextclade and Nextalign commands
+A run with ~20,000 input sequences takes roughly 8 hours to complete
 
-The input file of sequences in FASTA format should be named `ri_sequence.fa` (edit the `run.sh` script to use a different input filename).
+  
+## Running Pipeline via Oscar Interactive Session
 
-The pipeline is designed to be submitted as a batch job to a SLURM cluster:
+To run thie pipeline in an interact session, first enter a screen `screen -S JOBNAME` and then initiate an interact session with enough resources (`interact -t 24:00:00 -n 24 -m 128G`)
+  
+Navigate to the `1_scripts` directory:  
+```
+cd /gpfs/data/ris3/1_scripts
+```
+  
+Enter the singularity container and mount the parent directory:
 
-    sbatch run.sh
+```
+singularity exec -B /gpfs/data/ris3/ /gpfs/data/ris3/1_scripts/covid12162022_latest.sif bash 
+```  
 
-If you are running locally instead of on a cluster, simply execute the script in bash:
+Once inside the container, run:
 
-    bash run.sh
+``` 
+bash run.sh /gpfs/data/ris3/PATH/TO/SEQUENCE/DATA
+```
 
-Results are written to the `results` subdirectory.
+To leave the screen use `ctl + a + d` and to return use `screen -r JOBNAME`  
+  
+Results will be produced in `/gpfs/data/ris3/3_results/${YYYYMMDD}`
+
+
+The `run.sh` script and usage instructions are modified from that on https://github.com/kantorlab/covid-pipeline 

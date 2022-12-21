@@ -1,32 +1,29 @@
-#!/bin/bash
-#SBATCH -c 1
-#SBATCH --mem=20G
-#SBATCH -t 12:00:00
-
 set -e
-BIN=bin
 
-mkdir -p results
+day=$(date "+%Y%m%d")
+
+mkdir -p /gpfs/data/ris3/3_results/${day}
+cd /gpfs/data/ris3/3_results/${day}
 
 # Run pangolin
-pangolin ri_sequences.fa -o results/pangolin --alignment --no-temp
+pangolin $1 -o /gpfs/data/ris3/3_results/${day}/pangolin --alignment --no-temp
 
 # Run nextclade
-$BIN/nextclade dataset get -n sars-cov-2 -o nextclade_dataset
-$BIN/nextclade run \
-	--input-dataset 'nextclade_dataset' \
-	--output-json 'results/nextclade.json' \
-	--output-csv 'results/nextclade.csv' \
-	--output-tsv 'results/nextclade.tsv' \
-	--output-tree 'results/nextclade.auspice.json' \
-	--input-qc-config 'src/qcRulesConfig.json' \
-  ri_sequences.fa \
->results/nextclade.log
+nextclade dataset get -n sars-cov-2 -o nextclade_dataset
+nextclade run \
+	--input-dataset nextclade_dataset \
+	--output-json /gpfs/data/ris3/3_results/${day}/nextclade.json \
+	--output-csv /gpfs/data/ris3/3_results/${day}/nextclade.csv \
+	--output-tsv /gpfs/data/ris3/3_results/${day}/nextclade.tsv \
+	--output-tree /gpfs/data/ris3/3_results/${day}/nextclade.auspice.json \
+	--input-qc-config /gpfs/data/ris3/2_metadata/qcRulesConfig.json \
+	$1
+	>/gpfs/data/ris3/3_results/${day}/nextclade.log
 
 # Run nextalign
-$BIN/nextalign run \
-	--genemap=src/genemap.gff \
+nextalign run \
+	--genemap=/gpfs/data/ris3/2_metadata/genemap.gff \
 	--genes=E,M,N,ORF10,ORF14,ORF1a,ORF1b,ORF3a,ORF6,ORF7a,ORF7b,ORF8,ORF9b,S \
-	--output-all=results/nextalign \
-	--input-ref=src/reference.fasta \
-	ri_sequences.fa
+	--output-all=/gpfs/data/ris3/3_results/${day}/nextalign \
+	--input-ref=/gpfs/data/ris3/2_metadata/reference.fasta \
+	$1
