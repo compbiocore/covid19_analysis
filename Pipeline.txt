@@ -34,4 +34,5 @@ $BIN/nextalign \
 $BIN/iqtree2 -s results/nextalign-references/ri_sequences_qc_references.aligned.fasta --prefix results/iqtree2 -st DNA -m GTR+F --mem 8G
 
 
-#### Once complete here - need to merge with the download so it is all one fluid process
+#### Once complete here need to update all paths to be accurate within the directory framework
+#### Also - need to merge with the download so it is all one fluid process
