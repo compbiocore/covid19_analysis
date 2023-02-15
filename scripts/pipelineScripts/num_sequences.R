@@ -67,7 +67,7 @@ g <- ggplot(data=ri) +
     labels=waiver(),
     date_labels="%b %Y"
   ) +
-  scale_y_continuous(breaks=seq(0, 3000, 500), position="right") +
+  scale_y_continuous(breaks=seq(0, 23000, 500), position="right") +
   scale_fill_manual(
     values=c(
       "CDC"="#e41a1c",
