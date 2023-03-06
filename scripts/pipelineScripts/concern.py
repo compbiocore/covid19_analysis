@@ -2,8 +2,6 @@ import json
 import pandas as pd
 import numpy as np
 
-
-## Update Concern mutation dict to be current
 concern = {
         "L5F": ["B.1.526"],
         "S13I": ["B.1.429"],
@@ -73,7 +71,6 @@ for _, row in seqs.iterrows():
                 detail.append([row.strain, row.date, mutation])
 
 detail = pd.DataFrame.from_records(detail, columns=["strain", "date", "mutation"])
-detail = detail.drop_duplicates(subset = "strain")
 detail.to_csv("results/concern-long.csv", index=False)
 
 detail["value"] = 1
@@ -85,3 +82,4 @@ detail = detail.pivot(index="strain", columns="mutation", values="value")\
                .sort_values("date")
 detail.to_csv("results/concern.csv", index=False)
 print(detail.describe())
+
