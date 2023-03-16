@@ -1,7 +1,7 @@
 library(tidyverse)
 
-setwd("/gpfs/data/ris3/nextstrain_test")
-ri <- read_csv("results/qc-passed.csv") %>%
+setwd("/gpfs/data/ris3/dev/20230312/3_results/20230313/")
+ri <- read_csv("qc-passed.csv") %>%
   mutate(
     step=1,
     Source=as.factor(case_when(
@@ -24,7 +24,7 @@ ri <- group_by(ri, date, Source) %>%
   mutate(Cumulative=cumsum(step)) %>%
   ungroup()
 
-write_csv(ri, "results/num-sequences.csv")
+write_csv(ri, "num-sequences.csv")
 
 # Summarize by week
 ri <- mutate(ri, week=lubridate::floor_date(date, unit="week")) %>%
@@ -67,7 +67,7 @@ g <- ggplot(data=ri) +
     labels=waiver(),
     date_labels="%b %Y"
   ) +
-  scale_y_continuous(breaks=seq(0, 23000, 500), position="right") +
+  scale_y_continuous(breaks=seq(0, length(nseq), 500), position="right") +
   scale_fill_manual(
     values=c(
       "CDC"="#e41a1c",
@@ -93,6 +93,6 @@ g <- ggplot(data=ri) +
     panel.grid.major.y=element_line(color="gray", size=0.1)
   )
 
-pdf(file="results/num-sequences.pdf", width=4, height=4)
-print(g)
-dev.off()
+f_out <- paste("Fig_Cumulative_num_seqs_by_source_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+ggsave(f_out, device = "pdf",width = 6, height = 6, dpi = 300)
+

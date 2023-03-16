@@ -1,11 +1,12 @@
 library(tidyverse)
 
-ri <- read_csv("results/qc-passed.csv") %>%
+setwd("/gpfs/data/ris3/dev/20230312/3_results/20230313/")
+ri <- read_csv("qc-passed.csv") %>%
   select(date, pangolin.lineage, cdc.classification) %>%
   arrange(date)
 
 top <- group_by(ri, pangolin.lineage) %>% tally() %>% arrange(desc(n))
-write_csv(top, "results/top-lineages.csv")
+write_csv(top, "top-lineages.csv")
 
 ri <- mutate(ri,
              step=1,
@@ -884,7 +885,7 @@ g <- ggplot(data=ri) +
     labels=waiver(),
     date_labels="%b %Y"
   ) +
-  scale_y_continuous(breaks=seq(0, 23000, 500), position="right") +
+  scale_y_continuous(breaks=seq(0, nseq, 500), position="right") +
   scale_fill_manual(
     values=c("BA.1 lineage (VOC)" = "#B22222",
              "B.1.1.529 lineage (VOC)"="#FF3030",
@@ -924,6 +925,6 @@ g <- ggplot(data=ri) +
     panel.grid.major.y=element_line(color="gray", size=0.1)
   )
 
-pdf(file="results/top-lineages.pdf", width=4, height=3.5)
+pdf(file="Fig_Cumulative_lineages_sequenced_in_RI.pdf", width=10, height=10)
 print(g)
 dev.off()

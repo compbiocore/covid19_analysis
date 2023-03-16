@@ -15,9 +15,9 @@ var_of_concern <- c("B.1.1.529", "BA.1 Lineage", "BA.2 Lineage",
                     "Gamma Lineage", "Delta Lineage", "Eta Lineage", "Theta Lineage", "Kappa Lineage",
                     "Iota Lineage", "Zeta Lineage", "Mu Lineage")
 
-set1mod20 <- c("#FF3300", "#EB3B29", "#C84234", "#D01A00", "#C70039",
-               "#FD9612","#CC0066","#6600CC","#FF9900","#0000FF","#3399FF","#00CCFF",
-               "#FF99FF","#006633","#009900","#00CC33","#33FF99","#989898")
+set1mod20 <- c("#FF0000", "#FD4E4E", "#D55B5B", "#CD1F03", "#C70039",
+               "#AA3927","#CC0066","#6600CC","#D8AAFB","#0000FF","#F88520","#00CCFF",
+               "#F8F120","#93F820","#009900","#00CC33","#33FF99","#989898")
 
 var_regions <- c("South Africa","South Africa","South Africa","South Africa",
                  "South Africa","South Africa","South Africa","UK","South Africa","Brazil",
@@ -25,7 +25,7 @@ var_regions <- c("South Africa","South Africa","South Africa","South Africa",
 
 # Pangolin QC only
 # pangolin results from Oscar
-pangolin_res <- read_csv("results/qc-passed.csv") %>%
+pangolin_res <- read_csv("/gpfs/data/ris3/dev/20230312/3_results/20230313/qc-passed.csv") %>%
   rename(seqName=strain, lineage=pangolin.lineage, coll_date=date) %>%
   select(seqName, lineage, coll_date)
 
@@ -60,12 +60,9 @@ dat1 <- sum_df
 var_concern_df <- as.data.frame(matrix(NA,0,6))
 
 
-###This is where I need to add Year and probably MMWR week information to solve my issue with percentages being greater than 100
-
 for(z in 1:length(var_of_concern)){ # filter through list of variants of concern
   loc_variant <- dat1 %>%           # assign the file dat1 to loc_variant 
     filter(lineage == var_of_concern[z]) %>%  #filter lineage for particular variant of concern
-    #filter(between(coll_date, as.Date("2021-01-03"), as.Date("2022-01-01"))) %>%
     group_by(coll_date) %>%
     summarise(n=n()) %>%
     arrange(coll_date) 
@@ -95,7 +92,6 @@ for(z in 1:length(var_of_concern)){ # filter through list of variants of concern
 }
 
 
-
 colnames(var_concern_df) <- c("variant","region","total","coll_date","date_range","n_per_date")
 var_concern_df$variant <- factor(var_concern_df$variant, level=unique(var_concern_df$variant))
 var_concern_df <- var_concern_df[!is.na(var_concern_df$coll_date),]
@@ -117,10 +113,10 @@ var_concern_df$ym <- (format(as.Date(var_concern_df$ym), "%Y-%m"))
 report_total <- var_concern_df %>%
   filter(!is.na(total)) %>%
   select(variant,region,total,date_range)
-colnames(report_total) <- c("Variant of concern/interest","Region Variant was Originally Identified","Identified total cases, n","Range of sampling dates")
+colnames(report_total) <- c("Variant of concern/being monitored","Region Variant was Originally Identified","Identified total cases, n","Range of sampling dates")
 
-#f_var_total_out <- paste0("results/variants_of_concern_summary_oscar_",format(Sys.Date(),"%Y%b%d"),".xlsx")
-#openxlsx::write.xlsx(report_total,f_var_total_out)
+f_var_total_out <- paste0("variants_of_concern_summary_",format(Sys.Date(),"%Y%b%d"),".xlsx")
+openxlsx::write.xlsx(report_total,f_var_total_out)
 
 ####
 # numbers per variant per week
@@ -206,8 +202,8 @@ ggplot(dat6,aes(x=coll_date,y=N,group=Source)) +
         legend.title = element_text(size=16),
         legend.text = element_text(size = 15))
 
-#f_out <- paste("results/Fig-1B_n",nrow(dat1),"_cumulative_seqs_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-#ggsave(f_out, device = "pdf",width = 10, height = 10, dpi = 300)
+f_out <- paste("Fig_Cumulative_seqs_(n=",nrow(dat1),")_by_source_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+ggsave(f_out, device = "pdf",width = 10, height = 10, dpi = 300)
 
 
 #### graphs with variants of concern and variants of interest
@@ -265,9 +261,9 @@ for(i in 1:length(var_of_concern)){
   var_per_month <- rbind(var_per_month,loc_df_per_var)
 }
 colnames(var_per_month) <- c("variant","m","n","ym")
-var_per_month$ym <- (format(as.Date(var_per_month$ym), "%Y-%m"))
+#var_per_month$ym <- (format(as.Date(var_per_month$ym), "%Y-%m"))
 
-# Figure 2: stacked bars with % of VOC, VOI and non-VOC/non-VOI 
+# Figure 2: stacked bars with % of VOC, VBM and non-VOC/non-VBM 
 
 
 var_per_month$perc <- NA
@@ -275,7 +271,7 @@ percent_var_per_month <- as.data.frame(matrix(NA,0,5))
 for(i in 1:nrow(total_per_month)){
   loc_df_perc <- var_per_month %>%
     filter(m == i)
-  variant <- "non-VOC/non-VOI"
+  variant <- "non-VOC/non-VBM"
   m <- i
   n <- total_per_month$nd[i] - sum(loc_df_perc$n)
   dates <- as.character(total_per_month$ym[i])
@@ -309,8 +305,8 @@ ggplot(percent_var_per_month) +
         legend.text = element_text(size = 8),
         legend.position="top")
 
-#f_out <- paste("results/Fig-2_set1mod14_Lineges_of_concern_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-#ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
+f_out <- paste("Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
 
 
@@ -320,7 +316,7 @@ ggplot(percent_var_per_month) +
   scale_fill_manual(values = set1mod20) +
   scale_x_discrete(labels = var_per_month$ym) +
   xlab("Collection date, months starting January 2021") +
-  ylab("Identified cases, n") +
+  ylab("Number of identified cases") +
   theme_classic() +
   theme(axis.text= element_text(size=18),
         axis.text.x = element_text(angle=45, vjust=1, hjust = 1, size=8),
@@ -330,12 +326,12 @@ ggplot(percent_var_per_month) +
         legend.text = element_text(size = 8),
         legend.position="top")
 
-#f_out <- paste("results/Fig-3_set1mo14_Lineges_of_concern_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-#ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
+f_out <- paste("Fig_Total_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
-# Figure 4: stacked bars with actual number but without non-VOC/non-VOI
+# Figure 4: stacked bars with actual number but without non-VOC/non-VBM
 df_var_per_month <- percent_var_per_month %>%
-  filter(variant != "non-VOC/non-VOI") %>%
+  filter(variant != "non-VOC/non-VBM") %>%
   select(-perc)
 
 tmp_df <- df_var_per_month %>%
@@ -349,7 +345,7 @@ ggplot(df_var_per_month) +
   geom_bar(aes(x = ym, y = n, fill = variant),color="white",stat = "identity") +
   scale_fill_manual(values = set1mod20) +
   scale_x_discrete(labels = df_var_per_month$ym) +
-  scale_y_continuous(name="Identified cases, n", breaks=seq(0,max_y,minor_br_y)) +
+  scale_y_continuous(name="Number of identified cases", breaks=seq(0,max_y,minor_br_y)) +
   xlab("Collection date, months starting January 2021") +
   theme_classic() +
   theme(axis.text= element_text(size=18),
@@ -360,12 +356,12 @@ ggplot(df_var_per_month) +
         legend.text = element_text(size = 8),
         legend.position="top")
 
-#f_out <- paste("results/Fig-4_set1mod14_VOC-VOI_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-#ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
+f_out <- paste("Fig_VOC-VBM_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
 
 ### Figure cumulative of specific mutations (I can change this based on interest)
-ri <- read_csv("results/concern-long.csv")
+ri <- read_csv("concern-long.csv")
 
 mutations <- ri %>% group_by(mutation) %>% tally() %>% arrange(-n)
 print(mutations)
@@ -446,19 +442,22 @@ g <- ggplot(data=ri) +
     axis.line=element_blank(),
     axis.ticks.x=element_line(size=0.25),
     axis.ticks.y=element_blank(),
-    axis.text.x=element_text(size=8, color="black", angle=45, hjust=1, vjust=0.5),
+    axis.text.x=element_text(size=8, color="black", angle=45, hjust=1), 
     axis.text.y=element_text(size=8, color="black"),
     panel.grid.major.y=element_line(color="gray", size=0.1)
   )
-g
 
-#pdf(file="results/Figure6.pdf", width=4, height=3.5)
+print(g)
+f_out <- paste("Fig_Cumulative_specific_mutations_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+ggsave(f_out, device = "pdf",width = 6, height = 6, dpi = 300)
+
+#pdf(file="Figure6.pdf", width=4, height=3.5)
 #print(g)
 #dev.off()
 
 
 ## Figure top 5 cumulative mutations
-ri <- read_csv("results/concern-long.csv")
+ri <- read_csv("concern-long.csv")
 
 mutations <- ri %>% group_by(mutation) %>% tally() %>% arrange(-n)
 print(mutations)
@@ -536,15 +535,16 @@ g <- ggplot(data=ri) +
     axis.line=element_blank(),
     axis.ticks.x=element_line(size=0.25),
     axis.ticks.y=element_blank(),
-    axis.text.x=element_text(size=8, color="black", angle=45, hjust=1, vjust=0.5),
+    axis.text.x=element_text(size=8, color="black", angle=45, hjust=1),
     axis.text.y=element_text(size=8, color="black"),
     panel.grid.major.y=element_line(color="gray", size=0.1)
   )
 
-g
-#pdf(file="results/Figure5.pdf", width=4, height=3.5)
-#print(g)
-#dev.off()
+print(g)
+f_out <- paste("Fig_Cumulative_num_mutations_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+ggsave(f_out, device = "pdf",width = 6, height = 6, dpi = 300)
+
+
 
 
 

@@ -1,7 +1,7 @@
 library(tidyverse)
 
-
-ri <- read_csv("results/qc-passed.csv") %>%
+setwd("/gpfs/data/ris3/dev/20230312/3_results/20230313/")
+ri <- read_csv("qc-passed.csv") %>%
   select(strain, date, pangolin.lineage, cdc.classification) %>%
   mutate(cdc.classification=replace_na(cdc.classification, "Non-VOC/Non-VBM"))
 
@@ -41,7 +41,7 @@ g <- ggplot(data=ri) +
   scale_y_continuous(position="right") +
   scale_fill_manual(
     values=c(
-      "Non-VOC/Non-VOI"="darkgray",
+      "Non-VOC/Non-VBM"="darkgray",
       "VBM"="#ff7f00",
       "VOC"="#e41a1c"
     )
@@ -59,16 +59,16 @@ g <- ggplot(data=ri) +
     axis.line=element_blank(),
     axis.ticks.x=element_line(size=0.25),
     axis.ticks.y=element_blank(),
-    axis.text.x=element_text(size=8, color="black", angle=90, hjust=1, vjust=0.5),
+    axis.text.x=element_text(size=6, color="black", angle=90, hjust=1, vjust=0.5),
     axis.text.y=element_text(size=8, color="black"),
     panel.grid.major.y=element_line(color="gray", size=0.1)
   )
 
-pdf(file="results/num-voc-vbm.pdf", width=4, height=4)
+pdf(file="Fig_Number_of_VOC-VBM.pdf", width=4, height=4)
 print(g)
 dev.off()
 
 ri <- pivot_wider(ri, names_from=cdc.classification, values_from=n) %>%
   replace(is.na(.), 0)
 
-write_csv(ri, "results/num-voc-vbm.csv")
+write_csv(ri, "num-voc-vbm.csv")

@@ -3,9 +3,11 @@ library(stringr)
 library(stringi)
 library(readxl)
 
+setwd("/gpfs/data/ris3/dev/20230312/3_results/20230313/")
+
 ref_len <- 29903
 
-data <- read_csv("results/qc-passed.csv") %>%
+data <- read_csv("qc-passed.csv") %>%
   mutate(seqName=strain,
          pango_lineage=pangolin.lineage,
          nextclade_clade=nextclade.clade,
@@ -23,5 +25,5 @@ data <- read_csv("results/qc-passed.csv") %>%
          nextclade_aa_substitutions,nextclade_aa_deletions,purpose_of_sequencing,
          comment)
 
-f_out <- paste0("results/n",nrow(data),"_RI_per_sample_nextclade_oscar_",format(Sys.Date(),"%Y%b%d"), ".xlsx")
+f_out <- paste0("n",nrow(data),"_RI_per_sample_nextclade_oscar_",format(Sys.Date(),"%Y%b%d"), ".xlsx")
 openxlsx::write.xlsx(data, file = f_out)

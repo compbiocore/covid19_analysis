@@ -59,8 +59,8 @@ concern = {
 }
 concern = dict(("S:"+key, value) for key, value in concern.items())
 
-mutations = json.load(open("results/mutations.json"))
-seqs = pd.read_csv("results/qc-passed.csv", usecols=["strain", "date", "pangolin.lineage", "cdc.classification"]).sort_values("date")
+mutations = json.load(open("../3_results/20230313/mutations.json"))
+seqs = pd.read_csv("../3_results/20230313/qc-passed.csv", usecols=["strain", "date", "pangolin.lineage", "cdc.classification"]).sort_values("date")
 
 detail = []
 
@@ -71,15 +71,18 @@ for _, row in seqs.iterrows():
                 detail.append([row.strain, row.date, mutation])
 
 detail = pd.DataFrame.from_records(detail, columns=["strain", "date", "mutation"])
-detail.to_csv("results/concern-long.csv", index=False)
+detail.to_csv("../3_results/20230313/concern-long.csv", index=False)
 
 detail["value"] = 1
+print(detail)
+detail = detail.drop_duplicates(subset = "strain")
+print(detail)
 detail = detail.pivot(index="strain", columns="mutation", values="value")\
                .fillna(0)\
                .astype(int)\
                .reset_index()\
                .merge(seqs[["strain", "date"]], how="left", on="strain")\
                .sort_values("date")
-detail.to_csv("results/concern.csv", index=False)
+detail.to_csv("../3_results/20230313/concern.csv", index=False)
 print(detail.describe())
 
