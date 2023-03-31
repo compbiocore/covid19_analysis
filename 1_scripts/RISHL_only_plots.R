@@ -27,7 +27,8 @@ var_regions <- c("South Africa","South Africa","South Africa","South Africa",
 # pangolin results from Oscar
 pangolin_res <- read_csv("/gpfs/data/ris3/dev/20230312/3_results/20230313/qc-passed.csv") %>%
   rename(seqName=strain, lineage=pangolin.lineage, coll_date=date) %>%
-  select(seqName, lineage, coll_date)
+  select(seqName, lineage, coll_date) %>%
+  filter(grepl("hCoV-19/USA/RI-RISHL", seqName))
 
 # combine Variants into larger categories
 sum_df <- pangolin_res  %>%
@@ -50,9 +51,9 @@ sum_df <- pangolin_res  %>%
   mutate(lineage = if_else((lineage == "P.1"),"Gamma Lineage",lineage)) %>%
   mutate(lineage = if_else((lineage == "P.2"),"Zeta Lineage",lineage)) %>%
   mutate(lineage = if_else((lineage == "P.3"),"Theta Lineage",lineage))
-  
 
-  
+
+
 roundUp <- function(x) 10^ceiling(log10(x))
 
 dat1 <- sum_df
@@ -188,26 +189,6 @@ dat6 <- dat5 %>%
   filter(coll_date >= starting_date)
 dat6$N <- as.numeric(dat6$N)
 
-# Figure 1
-ggplot(dat6,aes(x=coll_date,y=N,group=Source)) +
-  geom_line(aes(col=Source),size=1.2) +
-  scale_color_manual(values=c("#0095d6","#19b24b","#FF9900","#05618a","#d6bc00","#d60f63")) + # AI panel High Contrast 2
-  scale_x_date(breaks=date_breaks("1 months"),labels=date_format("%b %y")) +
-  scale_y_continuous(name="Cumulative Sequences, n", breaks=seq(0,total_num,minor_breaks)) +
-  xlab("Date of Sample") +
-  theme_classic() +
-  theme(axis.text= element_text(size=18),
-        axis.text.x = element_text(size = 14, angle = 90,hjust = 1, vjust = 0.5),
-        axis.title = element_text(size = 18),
-        legend.title = element_text(size=16),
-        legend.text = element_text(size = 15))
-
-f_out <- paste("Fig_Cumulative_seqs_(n=",nrow(dat1),")_by_source_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
-ggsave(f_out, device = "png",width = 10, height = 10, dpi = 300)
-f_out <- paste("Fig_Cumulative_seqs_(n=",nrow(dat1),")_by_source_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-ggsave(f_out, device = "pdf",width = 10, height = 10, dpi = 300)
-
-
 #### graphs with variants of concern and variants of interest
 
 total_per_month_tmp <- dat1 %>%
@@ -296,21 +277,18 @@ ggplot(percent_var_per_month) +
   geom_bar(aes(x = ym, y = perc, fill = variant),color="white",stat = "identity") +
   scale_fill_manual(values = set1mod20) +
   scale_x_discrete(labels = var_per_month$ym) +
-  geom_text(data=total_per_month,aes(x = ym, y = 100, label=nd ), size = 6, vjust = -0.5 ) +
+  geom_text(data=total_per_month,aes(x = ym, y = 100, label=nd ), size = 3, vjust = -0.5 ) +
   xlab("Collection date, months starting January 2021") +
-  ylab("Percent of identified cases, %") +
+  ylab("RIDOH Percent of identified cases, %") +
   theme_classic() +
-  theme(#axis.text= element_text(size=8),
-        axis.text.x = element_text(angle=45, vjust=1, hjust = 1, size=14, face = "bold"),
-        axis.title = element_text(size = 16, face = "bold"),
-        axis.text.y = element_text(size=12, face = "bold"),
+  theme(axis.text= element_text(size=6),
+        axis.text.x = element_text(angle=45, vjust=1, hjust = 1, size=8),
+        axis.title = element_text(size = 12),
         legend.title = element_blank(),
-        legend.text = element_text(size = 18),
+        legend.text = element_text(size = 8),
         legend.position="top")
 
-f_out <- paste("Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
-ggsave(f_out, device = "png",width = 18, height = 8, dpi = 300)
-f_out <- paste("Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste("Fig_RISHL_Percent_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
 
@@ -320,18 +298,20 @@ ggplot(percent_var_per_month) +
   geom_bar(aes(x = ym, y = n, fill = variant),color="white",stat = "identity") +
   scale_fill_manual(values = set1mod20) +
   scale_x_discrete(labels = var_per_month$ym) +
-  xlab("Collection date, months starting January 2021") +
-  ylab("Number of identified cases") +
+  xlab("Collection date, months starting February 2021") +
+  ylab("RIDOH Number of identified cases") +
   theme_classic() +
-  theme(axis.text= element_text(size=18),
-        axis.text.x = element_text(angle=45, vjust=1, hjust = 1, size=8),
-        axis.text.y = element_text(size=9),
-        axis.title = element_text(size = 12),
-        legend.title = element_blank(),
-        legend.text = element_text(size = 8),
-        legend.position="top")
+  theme(#axis.text= element_text(size=8),
+    axis.text.x = element_text(angle=45, vjust=1, hjust = 1, size=14, face = "bold"),
+    axis.title = element_text(size = 16, face = "bold"),
+    axis.text.y = element_text(size=12, face = "bold"),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 18),
+    legend.position="top")
 
-f_out <- paste("Fig_Total_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste("Fig_RISHL_Total_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+ggsave(f_out, device = "png",width = 18, height = 8, dpi = 300)
+f_out <- paste("Fig_RISHL_Total_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
 # Figure 4: stacked bars with actual number but without non-VOC/non-VBM
@@ -350,8 +330,8 @@ ggplot(df_var_per_month) +
   geom_bar(aes(x = ym, y = n, fill = variant),color="white",stat = "identity") +
   scale_fill_manual(values = set1mod20) +
   scale_x_discrete(labels = df_var_per_month$ym) +
-  scale_y_continuous(name="Number of identified cases", breaks=seq(0,max_y,minor_br_y)) +
-  xlab("Collection date, months starting January 2021") +
+  scale_y_continuous(name="RIDOH Number of identified cases", breaks=seq(0,max_y,minor_br_y)) +
+  xlab("Collection date, months starting February 2021") +
   theme_classic() +
   theme(axis.text= element_text(size=18),
         axis.text.x = element_text(angle=45, vjust=1, hjust = 1, size=8),
@@ -361,191 +341,7 @@ ggplot(df_var_per_month) +
         legend.text = element_text(size = 8),
         legend.position="top")
 
-f_out <- paste("Fig_VOC-VBM_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste("Fig_RISHL_VOC-VBM_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
-
-### Figure cumulative of specific mutations (I can change this based on interest)
-ri <- read_csv("concern-long.csv")
-
-mutations <- ri %>% group_by(mutation) %>% tally() %>% arrange(-n)
-print(mutations)
-
-selected <- c("S:K417T", "S:L452R", "S:S477N", "S:T478K", "S:E484K", "S:S494P", "S:H69-")
-
-colors <- c(
-  "#a6cee3",
-  "#1f78b4",
-  "#b2df8a",
-  "#33a02c",
-  "#fb9a99",
-  "#e31a1c",
-  "#fdbf6f"
-  #  "darkgray"
-)
-names(colors) <- c(selected)
-print(colors)
-
-ri <- mutate(ri,
-             step=1,
-             voc=case_when(mutation %in% selected ~ mutation,
-                           TRUE                   ~ "Other")) %>%
-  filter(voc != "Other")
-
-nseq <- nrow(ri)
-earliest <- as.Date("2021-01-03")
-latest <- max(ri$date)
-
-ri <- group_by(ri, date, voc) %>%
-  summarise(step=sum(step)) %>%
-  ungroup() %>%
-  group_by(voc) %>%
-  mutate(Cumulative=cumsum(step)) %>%
-  ungroup()
-
-# Summarize by week
-ri <- mutate(ri, week=lubridate::floor_date(date, unit="week")) %>%
-  group_by(week, voc) %>%
-  summarise(Cumulative=max(Cumulative)) %>%
-  ungroup() %>%
-  pivot_wider(names_from=voc, values_from=Cumulative)
-
-print(ri)
-
-ri <- tibble(week=seq.Date(from=lubridate::floor_date(earliest, unit="week"), to=lubridate::floor_date(latest, unit="week"), by="week")) %>% 
-  left_join(ri, on="week") %>%
-  fill(everything()) %>%
-  replace(is.na(.), 0)
-
-print(ri)
-print(tail(ri), width=1000)
-
-ri <- ri %>%
-  pivot_longer(!week, names_to="voc", values_to="Cumulative") %>% mutate(voc=factor(voc, levels=c(selected, "Other")))
-print(ri)
-
-g <- ggplot(data=ri) +
-  geom_bar(aes(x=week, y=Cumulative, fill=voc), stat="identity") +
-  labs(
-    x="Date of Sample",
-    y="Cumulative Number of Mutations",
-    fill="Mutation"
-  ) +
-  scale_x_date(
-    breaks=waiver(),
-    date_breaks="month",
-    labels=waiver(),
-    date_labels="%b %Y"
-  ) +
-  scale_fill_manual(values=colors) +
-  theme_classic() +
-  theme(
-    title=element_text(size=9),
-    legend.position="top",
-    legend.title=element_text(size=8),
-    legend.text=element_text(size=7),
-    axis.line=element_blank(),
-    axis.ticks.x=element_line(size=0.25),
-    axis.ticks.y=element_blank(),
-    axis.text.x=element_text(size=8, color="black", angle=45, hjust=1), 
-    axis.text.y=element_text(size=8, color="black"),
-    panel.grid.major.y=element_line(color="gray", size=0.1)
-  )
-
-print(g)
-f_out <- paste("Fig_Cumulative_specific_mutations_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-ggsave(f_out, device = "pdf",width = 6, height = 6, dpi = 300)
-
-#pdf(file="Figure6.pdf", width=4, height=3.5)
-#print(g)
-#dev.off()
-
-
-## Figure top 5 cumulative mutations
-ri <- read_csv("concern-long.csv")
-
-mutations <- ri %>% group_by(mutation) %>% tally() %>% arrange(-n)
-print(mutations)
-
-top5 <- head(mutations$mutation, 5)
-print(top5)
-
-colors <- c(
-  "#e41a1c",
-  "#377eb8",
-  "#4daf4a",
-  "#984ea3",
-  "#ff7f00",
-  "darkgray"
-)
-names(colors) <- c(top5, "Other")
-print(colors)
-
-ri <- mutate(ri,
-             step=1,
-             voc=case_when(mutation %in% top5 ~ mutation,
-                           TRUE               ~ "Other"))
-
-nseq <- nrow(ri)
-earliest <- as.Date("2021-01-03")
-latest <- max(ri$date)
-
-ri <- group_by(ri, date, voc) %>%
-  summarise(step=sum(step)) %>%
-  ungroup() %>%
-  group_by(voc) %>%
-  mutate(Cumulative=cumsum(step)) %>%
-  ungroup()
-
-# Summarize by week
-ri <- mutate(ri, week=lubridate::floor_date(date, unit="week")) %>%
-  group_by(week, voc) %>%
-  summarise(Cumulative=max(Cumulative)) %>%
-  ungroup() %>%
-  pivot_wider(names_from=voc, values_from=Cumulative)
-
-print(ri)
-
-ri <- tibble(week=seq.Date(from=lubridate::floor_date(earliest, unit="week"), to=lubridate::floor_date(latest, unit="week"), by="week")) %>% 
-  left_join(ri, on="week") %>%
-  fill(everything()) %>%
-  replace(is.na(.), 0)
-
-print(ri)
-
-ri <- ri %>%
-  pivot_longer(!week, names_to="voc", values_to="Cumulative") %>% mutate(voc=factor(voc, levels=c(top5, "Other")))
-print(ri)
-
-g <- ggplot(data=ri) +
-  geom_bar(aes(x=week, y=Cumulative, fill=voc), stat="identity") +
-  labs(
-    x="Date of Sample",
-    y="Cumulative Number of Mutations",
-    fill="Mutation"
-  ) +
-  scale_x_date(
-    breaks=waiver(),
-    date_breaks="month",
-    labels=waiver(),
-    date_labels="%b %Y"
-  ) +
-  scale_fill_manual(values=colors) +
-  theme_classic() +
-  theme(
-    title=element_text(size=9),
-    legend.position="top",
-    legend.title=element_text(size=8),
-    legend.text=element_text(size=7),
-    axis.line=element_blank(),
-    axis.ticks.x=element_line(size=0.25),
-    axis.ticks.y=element_blank(),
-    axis.text.x=element_text(size=8, color="black", angle=45, hjust=1),
-    axis.text.y=element_text(size=8, color="black"),
-    panel.grid.major.y=element_line(color="gray", size=0.1)
-  )
-
-print(g)
-f_out <- paste("Fig_Cumulative_num_mutations_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-ggsave(f_out, device = "pdf",width = 6, height = 6, dpi = 300)
 
