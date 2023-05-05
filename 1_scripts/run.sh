@@ -30,5 +30,6 @@ nextalign run \
 
 python ../1_scripts/qc.py
 Rscript ../1_scripts/figures.R
-Rscript ../1_scripts/num-voc-voi.R
+Rscript ../1_scripts/num-voc-vbm.R
+Rscript ../1_scripts/RISHL_only_plots.R
 Rscript ../1_scripts/new_perc_mutations.R
