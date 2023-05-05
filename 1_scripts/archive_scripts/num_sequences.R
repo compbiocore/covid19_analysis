@@ -1,6 +1,8 @@
 library(tidyverse)
 
-setwd("/gpfs/data/ris3/dev/20230312/3_results/20230313/")
+day=$(date "+%Y%m%d")
+
+setwd("../3_results/${day}/")
 ri <- read_csv("qc-passed.csv") %>%
   mutate(
     step=1,

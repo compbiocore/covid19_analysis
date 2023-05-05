@@ -1,12 +1,35 @@
 library(tidyverse)
 
-setwd("/gpfs/data/ris3/dev/20230312/3_results/20230313/")
+day=$(date "+%Y%m%d")
+
+setwd("../3_results/${day}/")
 ri <- read_csv("qc-passed.csv") %>%
   select(date, pangolin.lineage, cdc.classification) %>%
   arrange(date)
 
 top <- group_by(ri, pangolin.lineage) %>% tally() %>% arrange(desc(n))
 write_csv(top, "top-lineages.csv")
+
+
+#  mutate(lineage = str_replace(string = lineage, pattern = "BA\\.1\\..+", replacement = "BA.1 Lineage"))  %>%
+#  mutate(lineage = str_replace(string = lineage, pattern = "BA\\.2\\..+", replacement = "BA.2 Lineage"))   %>%
+#  mutate(lineage = str_replace(string = lineage, pattern = "BA\\.3\\..+", replacement = "BA.3 Lineage"))  %>% 
+#  mutate(lineage = str_replace(string = lineage, pattern = "BA\\.4\\..+", replacement = "BA.4 Lineage"))  %>%
+#  mutate(lineage = str_replace(string = lineage, pattern = "BA\\.5\\..+", replacement = "BA.5 Lineage"))  %>% 
+#  mutate(lineage = str_replace(string = lineage, pattern = "AY\\..+", replacement = "Delta Lineage"))  %>%
+#  mutate(lineage = str_replace(string = lineage, pattern = "^X.+", replacement = "Recombinant Omicron Lineage"))  %>%
+#  mutate(lineage = str_replace(string = lineage, pattern = "^[B-D][C-Z]\\..+", replacement = "Other Omicron Lineage")) %>%
+#  mutate(lineage = str_replace(string = lineage, pattern = "^Q\\..+", replacement = "Alpha Lineage")) %>%
+#  mutate(lineage = if_else((lineage == "B.1.1.7"),"Alpha Lineage",lineage)) %>%
+#  mutate(lineage = str_replace(string = lineage, pattern = "^B.1.351.+", replacement = "Beta Lineage")) %>%
+#  mutate(lineage = str_replace(string = lineage, pattern = "^B.1.621.+", replacement = "Mu Lineage")) %>%
+#  mutate(lineage = if_else((lineage == "B.1.427" | lineage == "B.1.429"),"Epsilon Lineage",lineage)) %>%
+#  mutate(lineage = if_else((lineage == "B.1.525"),"Eta Lineage",lineage)) %>%  
+#  mutate(lineage = if_else((lineage == "B.1.526"),"Iota Lineage",lineage)) %>%  
+#  mutate(lineage = if_else((lineage == "B.1.617.1"),"Kappa Lineage",lineage)) %>% 
+#  mutate(lineage = if_else((lineage == "P.1"),"Gamma Lineage",lineage)) %>%
+#  mutate(lineage = if_else((lineage == "P.2"),"Zeta Lineage",lineage)) %>%
+#  mutate(lineage = if_else((lineage == "P.3"),"Theta Lineage",lineage))
 
 ri <- mutate(ri,
              step=1,

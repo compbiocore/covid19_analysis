@@ -3,6 +3,9 @@
 *.sam
 *.bam
 
+/0_data/gisaid.tsv
+/0_data/gisaid.fasta
+
 ### BELOW IS FOR R projects. Feel free to delete if you don't have an R project ###
 # History files
 .Rhistory
