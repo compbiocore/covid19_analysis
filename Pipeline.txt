@@ -1,0 +1,30 @@
+### Fully functional
+
+nextclade run 	--input-dataset nextclade_dataset 	--output-json results/nextclade.json 	--output-csv results/nextclade.csv 	--output-tsv results/nextclade.tsv 	--output-tree results/nextclade.auspice.json 	--input-qc-config src/qcRulesConfig.json 50seq_test.fasta > results/nextclade.log
+
+nextalign run 	--genemap=src/genemap.gff 	--genes=E,M,N,ORF10,ORF14,ORF1a,ORF1b,ORF3a,ORF6,ORF7a,ORF7b,ORF8,ORF9b,S 	--output-all=results/nextalign 	--input-ref=src/reference.fasta 50seq_test.fasta
+
+#awk '{print $1,$2,$5,$6,$7,$8,$27}' FS='\t' OFS='\t' /gpfs/data/ris3/0_data/gisaid_20220926/metadataCombined.tsv > metadata.tsv
+
+python scripts/nextstrain-diagnostics.py --alignment results/nextalign/nextalign.aligned.fasta --reference src/reference.gb --metadata metadata.tsv --output-diagnostics results/nextstrain-diagnostics.tsv --output-flagged results/nextstrain-diagnostics-flagged.tsv --output-exclusion-list results/nextstrain-diagnostics-exclusion.txt 
+
+python scripts/qc.py
+python src/mutations.py
+python src/concern.py
+Rscript src/num-sequences.R
+Rscript src/num-voc-voi.R
+Rscript src/top-lineages.R
+Rscript src/ridoh-report.R
+Rscript src/figures.R
+
+
+###
+
+Still need to install IQtree and get that running
+
+# Tree
+$BIN/iqtree2 -s results/nextalign-references/ri_sequences_qc_references.aligned.fasta --prefix results/iqtree2 -st DNA -m GTR+F --mem 8G
+
+
+#### Once complete here need to update all paths to be accurate within the directory framework
+#### Also - need to merge with the download so it is all one fluid process
