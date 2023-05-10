@@ -268,7 +268,6 @@ for(i in 1:length(var_of_concern)){
   var_per_month <- rbind(var_per_month,loc_df_per_var)
 }
 colnames(var_per_month) <- c("variant","m","n","ym")
-#var_per_month$ym <- (format(as.Date(var_per_month$ym), "%Y-%m"))
 
 # Figure 2: stacked bars with % of VOC, VBM and non-VOC/non-VBM 
 
@@ -338,6 +337,8 @@ ggplot(percent_var_per_month) +
 
 f_out <- paste(pth , "/3_results/", day , "/Fig_Total_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
+f_out <- paste(pth , "/3_results/", day , "/Fig_Total_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+ggsave(f_out, device = "png",width = 12, height = 10, dpi = 300)
 
 # Figure 4: stacked bars with actual number but without non-VOC/non-VBM
 df_var_per_month <- percent_var_per_month %>%
@@ -368,5 +369,6 @@ ggplot(df_var_per_month) +
 
 f_out <- paste0(pth, "/3_results/", day , "/Fig_VOC-VBM_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
-
+f_out <- paste0(pth, "/3_results/", day , "/Fig_VOC-VBM_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+ggsave(f_out, device = "png",width = 12, height = 10, dpi = 300)
 

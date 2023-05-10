@@ -294,7 +294,8 @@ ggplot(percent_var_per_month) +
 
 f_out <- paste0(pth, "/3_results/", day, "/Fig_RISHL_Percent_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
-
+f_out <- paste0(pth, "/3_results/", day, "/Fig_RISHL_Percent_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+ggsave(f_out, device = "png",width = 12, height = 10, dpi = 300)
 
 
 # Figure 3: stacked bars with actual numbers
@@ -347,5 +348,5 @@ ggplot(df_var_per_month) +
 
 f_out <- paste0(pth, "/3_results/", day, "/Fig_RISHL_VOC-VBM_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
-
-
+f_out <- paste0(pth, "/3_results/", day, "/Fig_RISHL_VOC-VBM_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+ggsave(f_out, device = "png",width = 12, height = 10, dpi = 300)
