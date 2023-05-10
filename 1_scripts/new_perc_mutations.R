@@ -17,6 +17,7 @@ concernMuts <- read.table("mutations_of_concern.txt", sep="\t", header = TRUE) %
   group_by(mutations) %>%
   summarise(lineage=paste(lineage, collapse = ', '), .groups = 'drop')
 concernMuts$mutations <- paste("S", concernMuts$mutations, sep = ":")
+setwd(paste0("/gpfs/data/ris3/dev/050523/covid19_analysis/3_results/", day))
 write.table(concernMuts, file = paste0(pth , "/3_results/", day , "/concernMuts.txt"), sep = "\t",
             row.names = FALSE)
 
@@ -92,7 +93,7 @@ tpm <- keyMuts %>%
 tpm$ym <- (format(as.Date(tpm$ym), "%Y-%m"))
 tpm$m <- 1:nrow(tpm)
 tpm$seqs <- "Total"
-tpm
+
 
 # create a data frame with existing mutations using total_per_week as a base
 mut_per_month <- as.data.frame(matrix(NA,0,4))
@@ -216,7 +217,7 @@ col67 <- c("#3f912e",
 percent_mut_per_month_start_2021 <- percent_mut_per_month %>% filter(ym >= "2021-01")
 plen <- unique(percent_mut_per_month_start_2021$ym)
 percent_mut_per_month_start_2021$m <- 1:length(plen)
-setwd("/gpfs/data/ris3/dev/050523/covid19_analysis/2_metadata")
+
 ggplot(percent_mut_per_month_start_2021) + 
   geom_bar(aes(x = ym, y = perc, fill = mutation),color="white",stat = "identity") +
   scale_fill_manual(values = col67) +
