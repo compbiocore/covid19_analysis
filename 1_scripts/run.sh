@@ -37,5 +37,5 @@ Rscript ${pth}/1_scripts/new_perc_mutations.R ${day} ${pth}
 echo "Initial Analyses Complete, Running IQtree"
 
 awk '/^>/{f=!d[$1];d[$1]=1}f' ${pth}/3_results/${day}/nextalign/nextalign.aligned.fasta > ${pth}/3_results/${day}/nextalign/nextalign.aligned.no_dups.fasta
-iqtree -s ${pth}/3_results/${day}/nextalign/nextalign.aligned.no_dups.fasta --prefix ${pth}/3_results/${day}/iqtree2 -st DNA -m GTR+F -t 24 --mem 128G
+iqtree -s ${pth}/3_results/${day}/nextalign/nextalign.aligned.no_dups.fasta --prefix ${pth}/3_results/${day}/iqtree2 -st DNA -m GTR+F -nt 24 --mem 128G
 
