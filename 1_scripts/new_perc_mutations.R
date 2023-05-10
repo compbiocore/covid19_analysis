@@ -216,7 +216,7 @@ col67 <- c("#3f912e",
 percent_mut_per_month_start_2021 <- percent_mut_per_month %>% filter(ym >= "2021-01")
 plen <- unique(percent_mut_per_month_start_2021$ym)
 percent_mut_per_month_start_2021$m <- 1:length(plen)
-
+setwd("/gpfs/data/ris3/dev/050523/covid19_analysis/2_metadata")
 ggplot(percent_mut_per_month_start_2021) + 
   geom_bar(aes(x = ym, y = perc, fill = mutation),color="white",stat = "identity") +
   scale_fill_manual(values = col67) +
@@ -236,4 +236,4 @@ ggplot(percent_mut_per_month_start_2021) +
 f_out <- paste0(pth , "/3_results/", day , "/Fig_Percent_RI_Spike_protein_mutations_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
 ggsave(f_out, device = "png",width = 18, height = 7, dpi = 300)
 f_out <- paste0(pth , "/3_results/", day , "/Fig_Percent_RI_Spike_protein_mutations_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
+ggsave(f_out, device = "pdf",width = 18, height = 10, dpi = 300)
