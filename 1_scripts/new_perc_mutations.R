@@ -1,26 +1,23 @@
 library(tidyverse)
 
-  ### still to do:
-  ### Defining lineage mutations: https://github.com/cov-lineages/pango-designation/tree/master/lineage_constellations
-  
-  ### Define specific mutation groups for each lineage and use those to produce plots
-  
-  ### Plot of specific lineages - redo plot with mutations of concern including all omicron mutations as well.
+args = commandArgs(trailingOnly=TRUE)
+day = args[1]
+pth = args[2]
 
-day=$(date "+%Y%m%d")
-
-ridata <- read_csv("../3_results/${day}/qc-passed.csv") %>%
+ridata <- read_csv(paste0(pth , "/3_results/", day , "/qc-passed.csv")) %>%
   rename(seqName=strain, lineage=pangolin.lineage, coll_date=date, mutations=nextclade.aaSubstitutions) %>%
   select(seqName, lineage, coll_date, mutations) %>% 
   separate_rows(mutations, sep = ",")
 
-concernMuts <- read.table("../2_metadata/mutations_of_concern.txt", sep="\t", header=TRUE) %>% # table is all lineages copied from https://www.ecdc.europa.eu/en/covid-19/variants-concern with headers manually assigned for ease
+
+setwd("/gpfs/data/ris3/dev/050523/covid19_analysis/2_metadata")
+concernMuts <- read.table("mutations_of_concern.txt", sep="\t", header = TRUE) %>% # table is all lineages copied from https://www.ecdc.europa.eu/en/covid-19/variants-concern with headers manually assigned for ease
   select(WHO_lineage, lineage, mutations) %>%
   separate_rows(mutations, sep = ", ") %>%
   group_by(mutations) %>%
-  summarise(lineage=paste0(lineage, collapse = ', '), .groups = 'drop')
+  summarise(lineage=paste(lineage, collapse = ', '), .groups = 'drop')
 concernMuts$mutations <- paste("S", concernMuts$mutations, sep = ":")
-write.table(concernMuts, file = "../3_results/${day}/concernMuts.txt", sep = "\t",
+write.table(concernMuts, file = paste0(pth , "/3_results/", day , "/concernMuts.txt"), sep = "\t",
             row.names = FALSE)
 
 all_total_mutations <- unique(ridata$mutations)
@@ -124,7 +121,7 @@ for(i in 1:length(total_mutations)){
 }
 colnames(mut_per_month) <- c("mutation","m","n","ym")
 
-# Figure 2: stacked bars with % of VOC, VBM and non-VOC/non-VBM 
+# Figure 1: stacked bars with % of spike mutations of interest over time
 
 
 mut_per_month$perc <- NA
@@ -236,7 +233,7 @@ ggplot(percent_mut_per_month_start_2021) +
 #  legend.position="top")
 
 
-f_out <- paste("../3_results/${day}/Fig_Percent_RI_Spike_protein_mutations_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+f_out <- paste0(pth , "/3_results/", day , "/Fig_Percent_RI_Spike_protein_mutations_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
 ggsave(f_out, device = "png",width = 18, height = 7, dpi = 300)
-f_out <- paste("../3_results/${day}/Fig_Percent_RI_Spike_protein_mutations_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste0(pth , "/3_results/", day , "/Fig_Percent_RI_Spike_protein_mutations_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)

@@ -2,9 +2,12 @@
 *.fastq
 *.sam
 *.bam
+*.sif
+*.simg
 
 /0_data/gisaid.tsv
 /0_data/gisaid.fasta
+/3_results/
 
 ### BELOW IS FOR R projects. Feel free to delete if you don't have an R project ###
 # History files

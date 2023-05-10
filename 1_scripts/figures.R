@@ -1,11 +1,15 @@
+#!/usr/bin/env Rscript
 library(tidyverse)
 library(scales)
 library(lubridate)
 library(readxl)
 library(RColorBrewer)
 
-day=$(date "+%Y%m%d") ## I'm slightly concerned that this may end up on the snext day depending on when the script starts - talk to Paul about linking this to the initial argument in the run command
-
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
+print(args)
+day = args[1]
+pth = args[2]
 ##### Extract dates and enumerate variants of concern from pangolin results
 
 ### date format: x1 <- stamp("Mar 2, 2020")(ymd("2021-04-25")) # Apr 25, 2021
@@ -25,9 +29,8 @@ var_regions <- c("South Africa","South Africa","South Africa","South Africa",
                  "South Africa","South Africa","South Africa","UK","South Africa","Brazil",
                  "India", "Nigeria", "Philippines", "India", "USA", "Brazil", "Colombia")
 
-# Pangolin QC only
-# pangolin results from Oscar
-pangolin_res <- read_csv("../3_results/${day}/qc-passed.csv") %>%
+# Pangolin QC 
+pangolin_res <- read_csv(paste0(pth,"/3_results/",day,"/qc-passed.csv")) %>%
   rename(seqName=strain, lineage=pangolin.lineage, coll_date=date) %>%
   select(seqName, lineage, coll_date)
 
@@ -117,7 +120,7 @@ report_total <- var_concern_df %>%
   select(variant,region,total,date_range)
 colnames(report_total) <- c("Variant of concern/being monitored","Region Variant was Originally Identified","Identified total cases, n","Range of sampling dates")
 
-f_var_total_out <- paste0("../3_results/${day}/variants_of_concern_summary_",format(Sys.Date(),"%Y%b%d"),".xlsx")
+f_var_total_out <- paste0(pth, "/3_results/", day , "/variants_of_concern_summary_",format(Sys.Date(),"%Y%b%d"),".xlsx")
 openxlsx::write.xlsx(report_total,f_var_total_out)
 
 ####
@@ -204,9 +207,9 @@ ggplot(dat6,aes(x=coll_date,y=N,group=Source)) +
         legend.title = element_text(size=16),
         legend.text = element_text(size = 15))
 
-f_out <- paste("../3_results/${day}/Fig_Cumulative_seqs_(n=",nrow(dat1),")_by_source_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+f_out <- paste0(pth, "/3_results/", day , "/Fig_Cumulative_seqs_(n=",nrow(dat1),")_by_source_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
 ggsave(f_out, device = "png",width = 10, height = 10, dpi = 300)
-f_out <- paste("../3_results/${day}/Fig_Cumulative_seqs_(n=",nrow(dat1),")_by_source_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste0(pth, "/3_results/", day , "/Fig_Cumulative_seqs_(n=",nrow(dat1),")_by_source_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 10, height = 10, dpi = 300)
 
 
@@ -310,9 +313,9 @@ ggplot(percent_var_per_month) +
         legend.text = element_text(size = 18),
         legend.position="top")
 
-f_out <- paste("../3_results/${day}/Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+f_out <- paste0(pth, "/3_results/", day , "/Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
 ggsave(f_out, device = "png",width = 18, height = 8, dpi = 300)
-f_out <- paste("../3_results/${day}/Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste0(pth, "/3_results/", day , "/Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
 
@@ -333,7 +336,7 @@ ggplot(percent_var_per_month) +
         legend.text = element_text(size = 8),
         legend.position="top")
 
-f_out <- paste("../3_results/${day}/Fig_Total_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste(pth , "/3_results/", day , "/Fig_Total_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
 # Figure 4: stacked bars with actual number but without non-VOC/non-VBM
@@ -363,192 +366,7 @@ ggplot(df_var_per_month) +
         legend.text = element_text(size = 8),
         legend.position="top")
 
-f_out <- paste("../3_results/${day}/Fig_VOC-VBM_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste0(pth, "/3_results/", day , "/Fig_VOC-VBM_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
 
-###   ### Figure cumulative of specific mutations (I can change this based on interest)
-###   ri <- read_csv("concern-long.csv")
-###   
-###   mutations <- ri %>% group_by(mutation) %>% tally() %>% arrange(-n)
-###   print(mutations)
-###   
-###   selected <- c("S:K417T", "S:L452R", "S:S477N", "S:T478K", "S:E484K", "S:S494P", "S:H69-")
-###   
-###   colors <- c(
-###     "#a6cee3",
-###     "#1f78b4",
-###     "#b2df8a",
-###     "#33a02c",
-###     "#fb9a99",
-###     "#e31a1c",
-###     "#fdbf6f"
-###     #  "darkgray"
-###   )
-###   names(colors) <- c(selected)
-###   print(colors)
-###   
-###   ri <- mutate(ri,
-###                step=1,
-###                voc=case_when(mutation %in% selected ~ mutation,
-###                              TRUE                   ~ "Other")) %>%
-###     filter(voc != "Other")
-###   
-###   nseq <- nrow(ri)
-###   earliest <- as.Date("2021-01-03")
-###   latest <- max(ri$date)
-###   
-###   ri <- group_by(ri, date, voc) %>%
-###     summarise(step=sum(step)) %>%
-###     ungroup() %>%
-###     group_by(voc) %>%
-###     mutate(Cumulative=cumsum(step)) %>%
-###     ungroup()
-###   
-###   # Summarize by week
-###   ri <- mutate(ri, week=lubridate::floor_date(date, unit="week")) %>%
-###     group_by(week, voc) %>%
-###     summarise(Cumulative=max(Cumulative)) %>%
-###     ungroup() %>%
-###     pivot_wider(names_from=voc, values_from=Cumulative)
-###   
-###   print(ri)
-###   
-###   ri <- tibble(week=seq.Date(from=lubridate::floor_date(earliest, unit="week"), to=lubridate::floor_date(latest, unit="week"), by="week")) %>% 
-###     left_join(ri, on="week") %>%
-###     fill(everything()) %>%
-###     replace(is.na(.), 0)
-###   
-###   print(ri)
-###   print(tail(ri), width=1000)
-###   
-###   ri <- ri %>%
-###     pivot_longer(!week, names_to="voc", values_to="Cumulative") %>% mutate(voc=factor(voc, levels=c(selected, "Other")))
-###   print(ri)
-###   
-###   g <- ggplot(data=ri) +
-###     geom_bar(aes(x=week, y=Cumulative, fill=voc), stat="identity") +
-###     labs(
-###       x="Date of Sample",
-###       y="Cumulative Number of Mutations",
-###       fill="Mutation"
-###     ) +
-###     scale_x_date(
-###       breaks=waiver(),
-###       date_breaks="month",
-###       labels=waiver(),
-###       date_labels="%b %Y"
-###     ) +
-###     scale_fill_manual(values=colors) +
-###     theme_classic() +
-###     theme(
-###       title=element_text(size=9),
-###       legend.position="top",
-###       legend.title=element_text(size=8),
-###       legend.text=element_text(size=7),
-###       axis.line=element_blank(),
-###       axis.ticks.x=element_line(size=0.25),
-###       axis.ticks.y=element_blank(),
-###       axis.text.x=element_text(size=8, color="black", angle=45, hjust=1), 
-###       axis.text.y=element_text(size=8, color="black"),
-###       panel.grid.major.y=element_line(color="gray", size=0.1)
-###     )
-###   
-###   print(g)
-###   f_out <- paste("Fig_Cumulative_specific_mutations_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-###   ggsave(f_out, device = "pdf",width = 6, height = 6, dpi = 300)
-###   
-###   #pdf(file="Figure6.pdf", width=4, height=3.5)
-###   #print(g)
-###   #dev.off()
-###   
-###   
-###   ## Figure top 5 cumulative mutations
-###   ri <- read_csv("concern-long.csv")
-###   
-###   mutations <- ri %>% group_by(mutation) %>% tally() %>% arrange(-n)
-###   print(mutations)
-###   
-###   top5 <- head(mutations$mutation, 5)
-###   print(top5)
-###   
-###   colors <- c(
-###     "#e41a1c",
-###     "#377eb8",
-###     "#4daf4a",
-###     "#984ea3",
-###     "#ff7f00",
-###     "darkgray"
-###   )
-###   names(colors) <- c(top5, "Other")
-###   print(colors)
-###   
-###   ri <- mutate(ri,
-###                step=1,
-###                voc=case_when(mutation %in% top5 ~ mutation,
-###                              TRUE               ~ "Other"))
-###   
-###   nseq <- nrow(ri)
-###   earliest <- as.Date("2021-01-03")
-###   latest <- max(ri$date)
-###   
-###   ri <- group_by(ri, date, voc) %>%
-###     summarise(step=sum(step)) %>%
-###     ungroup() %>%
-###     group_by(voc) %>%
-###     mutate(Cumulative=cumsum(step)) %>%
-###     ungroup()
-###   
-###   # Summarize by week
-###   ri <- mutate(ri, week=lubridate::floor_date(date, unit="week")) %>%
-###     group_by(week, voc) %>%
-###     summarise(Cumulative=max(Cumulative)) %>%
-###     ungroup() %>%
-###     pivot_wider(names_from=voc, values_from=Cumulative)
-###   
-###   print(ri)
-###   
-###   ri <- tibble(week=seq.Date(from=lubridate::floor_date(earliest, unit="week"), to=lubridate::floor_date(latest, unit="week"), by="week")) %>% 
-###     left_join(ri, on="week") %>%
-###     fill(everything()) %>%
-###     replace(is.na(.), 0)
-###   
-###   print(ri)
-###   
-###   ri <- ri %>%
-###     pivot_longer(!week, names_to="voc", values_to="Cumulative") %>% mutate(voc=factor(voc, levels=c(top5, "Other")))
-###   print(ri)
-###   
-###   g <- ggplot(data=ri) +
-###     geom_bar(aes(x=week, y=Cumulative, fill=voc), stat="identity") +
-###     labs(
-###       x="Date of Sample",
-###       y="Cumulative Number of Mutations",
-###       fill="Mutation"
-###     ) +
-###     scale_x_date(
-###       breaks=waiver(),
-###       date_breaks="month",
-###       labels=waiver(),
-###       date_labels="%b %Y"
-###     ) +
-###     scale_fill_manual(values=colors) +
-###     theme_classic() +
-###     theme(
-###       title=element_text(size=9),
-###       legend.position="top",
-###       legend.title=element_text(size=8),
-###       legend.text=element_text(size=7),
-###       axis.line=element_blank(),
-###       axis.ticks.x=element_line(size=0.25),
-###       axis.ticks.y=element_blank(),
-###       axis.text.x=element_text(size=8, color="black", angle=45, hjust=1),
-###       axis.text.y=element_text(size=8, color="black"),
-###       panel.grid.major.y=element_line(color="gray", size=0.1)
-###     )
-###   
-###   print(g)
-###   f_out <- paste("Fig_Cumulative_num_mutations_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
-###   ggsave(f_out, device = "pdf",width = 6, height = 6, dpi = 300)
-###   
-###   

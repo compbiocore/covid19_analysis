@@ -1,6 +1,11 @@
 library(tidyverse)
 
-setwd("/gpfs/data/ris3/dev/20230312/3_results/20230313/")
+args = commandArgs(trailingOnly=TRUE)
+print(args)
+day = args[1]
+pth = args[2]
+
+setwd(paste0(pth, "/3_results/", day))
 ri <- read_csv("qc-passed.csv") %>%
   select(strain, date, pangolin.lineage, cdc.classification) %>%
   mutate(cdc.classification=replace_na(cdc.classification, "Non-VOC/Non-VBM"))
