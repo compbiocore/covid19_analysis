@@ -4,7 +4,7 @@
 *.bam
 *.sif
 *.simg
-
+slurm*
 /0_data/gisaid.tsv
 /0_data/gisaid.fasta
 /3_results/
