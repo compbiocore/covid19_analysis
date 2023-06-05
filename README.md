@@ -4,7 +4,7 @@ Template for analyses repositories. For more information see https://compbiocore
 
  * **metadata:** contains the directory
  ```2_metadata``` which has a GFF file, QC rules file, and the reference fasta file and is located on oscar at ```/gpfs/data/ris3/2_metadata```; and the  ```Dockerfile``` that was used to initially create the container for running the pipeline
- * **scripts:** contains shell scripts to run the pipeline as reflected in ```/gpfs/data/ris3/1_scripts``` the singularity image which is also located in ```/gpfs/data/ris3/1_scripts``` can be pulled directly to oscar using ```singularity pull covid19.sif docker://ghcr.io/compbiocore/covid12162022:latest```
+ * **scripts:** contains shell scripts to run the pipeline as reflected in ```/gpfs/data/ris3/1_scripts``` the singularity image which is also located in ```/gpfs/data/ris3/1_scripts``` can be pulled directly to oscar using ```singularity pull covid19.sif docker://ericsalomaki/covid_new_pango:05092023```
 
 ## Running Pipeline via Oscar Slurm Batch Submission  
   
