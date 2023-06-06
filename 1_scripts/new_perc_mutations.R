@@ -10,14 +10,14 @@ ridata <- read_csv(paste0(pth , "/3_results/", day , "/qc-passed.csv")) %>%
   separate_rows(mutations, sep = ",")
 
 
-setwd("/gpfs/data/ris3/dev/050523/covid19_analysis/2_metadata")
+setwd(paste0(pth, "/2_metadata"))
 concernMuts <- read.table("mutations_of_concern.txt", sep="\t", header = TRUE) %>% # table is all lineages copied from https://www.ecdc.europa.eu/en/covid-19/variants-concern with headers manually assigned for ease
   select(WHO_lineage, lineage, mutations) %>%
   separate_rows(mutations, sep = ", ") %>%
   group_by(mutations) %>%
   summarise(lineage=paste(lineage, collapse = ', '), .groups = 'drop')
 concernMuts$mutations <- paste("S", concernMuts$mutations, sep = ":")
-setwd(paste0("/gpfs/data/ris3/dev/050523/covid19_analysis/3_results/", day))
+setwd(paste0(pth, "/3_results/", day))
 write.table(concernMuts, file = paste0(pth , "/3_results/", day , "/concernMuts.txt"), sep = "\t",
             row.names = FALSE)
 
@@ -146,73 +146,7 @@ percent_mut_per_month$n <- as.numeric(percent_mut_per_month$n)
 percent_mut_per_month$mutation <- factor(percent_mut_per_month$mutation, level=unique(percent_mut_per_month$mutation))
 
 # stacked bars with %
-col67 <- c("#3f912e",
-           "#8740bd",
-           "#6eb729",
-           "#b465e5",
-           "#5bc453",
-           "#516fef",
-           "#a4be2b",
-           "#3e56c6",
-           "#bdad30",
-           "#717aee",
-           "#d9992a",
-           "#6c4fb5",
-           "#4bbb6d",
-           "#d94db1",
-           "#4ec88c",
-           "#a43aa0",
-           "#8f9c36",
-           "#c973dc",
-           "#45813b",
-           "#9480e8",
-           "#e2751e",
-           "#4691eb",
-           "#d5482e",
-           "#34b9e1",
-           "#d44248",
-           "#45c4a8",
-           "#dd3e77",
-           "#87b25f",
-           "#7b51a7",
-           "#bd903b",
-           "#476ac2",
-           "#c16726",
-           "#66a1e5",
-           "#d26e45",
-           "#3bbcc3",
-           "#ce3b54",
-           "#61a874",
-           "#d34d92",
-           "#307646",
-           "#d680d4",
-           "#6c671e",
-           "#aa8edd",
-           "#bba25b",
-           "#505da4",
-           "#ad6d37",
-           "#4177b9",
-           "#ce7058",
-           "#5a9ac9",
-           "#905734",
-           "#a8a1de",
-           "#808d52",
-           "#b3579b",
-           "#459576",
-           "#88539a",
-           "#dea47a",
-           "#6a679f",
-           "#a08253",
-           "#d28ec9",
-           "#d0706b",
-           "#935f93",
-           "#dc7c88",
-           "#944471",
-           "#eb85a6",
-           "#8b4a5f",
-           "#ce83ad",
-           "#a24654",
-           "#ad486c")
+col68 <- c("#8d476f", "#52c249", "#a053d2", "#8fbd39", "#5156cd", "#c4b83a", "#6e77f3", "#3e8f2b", "#dc63d3", "#61c36c", "#e0378f", "#4ed09b", "#a93b9c", "#8ea845", "#6d53b8", "#de8f2b", "#3c66c4", "#9e8823", "#6089ec", "#ea6c39", "#659ce8", "#cb3c28", "#3bbcc3", "#de3657", "#4aa364", "#d484e0", "#628124", "#9d82e1", "#606818", "#6d4599", "#96be77", "#a62c69", "#61c3a6", "#bb3860", "#3d7f43", "#df67af", "#306a3c", "#eb678d", "#379577", "#b14140", "#5bc0eb", "#ad5121", "#4797c8", "#dda955", "#505099", "#aa742c", "#5061a8", "#bbaf6c", "#9461b1", "#818b4b", "#784389", "#56642b", "#cd90cf", "#206e54", "#e46e67", "#4c78b7", "#db966a", "#68649c", "#866a32", "#a7a0e1", "#8a5229", "#9d5e92", "#ae6053", "#e292b6", "#9a4657", "#e18889", "#8b4a5f", "#c3618b")
 
 percent_mut_per_month_start_2021 <- percent_mut_per_month %>% filter(ym >= "2021-01")
 plen <- unique(percent_mut_per_month_start_2021$ym)
@@ -220,7 +154,7 @@ percent_mut_per_month_start_2021$m <- 1:length(plen)
 
 ggplot(percent_mut_per_month_start_2021) + 
   geom_bar(aes(x = ym, y = perc, fill = mutation),color="white",stat = "identity") +
-  scale_fill_manual(values = col67) +
+  scale_fill_manual(values = col68) +
   scale_x_discrete(labels = plen) +
   #geom_text(data=tpm,aes(x = ym, y = 100, label=nd ), angle=30, size = 3.5, hjust = -0.5 ) + this would put total numbers at the top of each month. Dropped because #'s are <50,000 some months
   xlab("Collection date, months starting January 2021") +
