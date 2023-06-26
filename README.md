@@ -1,6 +1,6 @@
 # Covid19 Analysis Pipeline
 
-Template for analyses repositories. For more information see https://compbiocore-brown.slab.com/posts/data-organisation-for-analysis-repos-fdi2cddd. Folders that should be present in all such repositories are:
+## Directory Structure
 
  * **0_data:** is an empty directory in which to download sequneces and metadata from GISAID for analyses.
  * **1_scripts:** contains shell scripts to run the pipeline as reflected in ```/covid19_analysis/1_scripts``` the singularity image can be pulled directly to oscar or your local machine using ```singularity pull covid19.sif docker://ericsalomaki/covid_new_pango:05092023``` from the `1_scripts` directory.
