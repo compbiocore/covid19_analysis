@@ -3,7 +3,7 @@
 Template for analyses repositories. For more information see https://compbiocore-brown.slab.com/posts/data-organisation-for-analysis-repos-fdi2cddd. Folders that should be present in all such repositories are:
 
  * **0_data:** is an empty directory in which to download sequneces and metadata from GISAID for analyses.
- * **1_scripts:** contains shell scripts to run the pipeline as reflected in ```/covid19_analysis/1_scripts``` the singularity image can be pulled directly to oscar or your loacl machine using ```singularity pull covid19.sif docker://ericsalomaki/covid_new_pango:05092023``` from the `1_scripts` directory.
+ * **1_scripts:** contains shell scripts to run the pipeline as reflected in ```/covid19_analysis/1_scripts``` the singularity image can be pulled directly to oscar or your local machine using ```singularity pull covid19.sif docker://ericsalomaki/covid_new_pango:05092023``` from the `1_scripts` directory.
  * **2_metadata:** contains the ```Dockerfile``` that was used to create the container for running the pipeline, a GFF file, QC rules file, and the reference fasta file and genbank file.
  * **_3_results** will be created while the pipeline is running and results will be written to ```/covid19_analysis/3_results/${YYYYMMDD}```
 
