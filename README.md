@@ -16,7 +16,7 @@ sbatch run_slurm.sh /ABSOLUTE/PATH/TO/SEQUENCE/DATA/covid_sequences.fasta
 ```  
 Results will be produced in ```/covid19_analysis/3_results/${YYYYMMDD}```
 
-A run with ~20,000 input sequences takes roughly 30 minutes to complete the primary pangolin analyses and produce figures, however the IQ-tree will run for several days. 
+A run with ~20,000 input sequences takes roughly 30 minutes to complete the primary pangolin analyses and produce figures on Oscar with 24 threads and 128G RAM allocated, however the IQ-tree analysis will run for several days. If incomplete, IQ-tree uses checkpoints and therefore the analysis can be continued beyond the allocated time, if necessary.
 
   
 ## Running Pipeline via Oscar Interactive Session
