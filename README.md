@@ -2,19 +2,21 @@
 
 Template for analyses repositories. For more information see https://compbiocore-brown.slab.com/posts/data-organisation-for-analysis-repos-fdi2cddd. Folders that should be present in all such repositories are:
 
- * **metadata:** contains the directory
- ```2_metadata``` which has a GFF file, QC rules file, and the reference fasta file and is located on oscar at ```/gpfs/data/ris3/2_metadata```; and the  ```Dockerfile``` that was used to initially create the container for running the pipeline
- * **scripts:** contains shell scripts to run the pipeline as reflected in ```/gpfs/data/ris3/1_scripts``` the singularity image which is also located in ```/gpfs/data/ris3/1_scripts``` can be pulled directly to oscar using ```singularity pull covid19.sif docker://ericsalomaki/covid_new_pango:05092023```
+ * **0_data:** is an empty directory in which to download sequneces and metadata from GISAID for analyses.
+ * **1_scripts:** contains shell scripts to run the pipeline as reflected in ```/covid19_analysis/1_scripts``` the singularity image can be pulled directly to oscar or your loacl machine using ```singularity pull covid19.sif docker://ericsalomaki/covid_new_pango:05092023``` from the `1_scripts` directory.
+ * **2_metadata:** contains the ```Dockerfile``` that was used to create the container for running the pipeline, a GFF file, QC rules file, and the reference fasta file and genbank file.
+ * **_3_results** will be created while the pipeline is running and results will be written to ```/covid19_analysis/3_results/${YYYYMMDD}```
+
 
 ## Running Pipeline via Oscar Slurm Batch Submission  
   
-To run the covid pipeline, navigate to ```/gpfs/data/ris3/1_scripts/``` and run:   
+To run the covid pipeline, navigate to ```/PATH/TO/CLONED/REPO/covid19_analysis/1_scripts/``` and run:   
 ```
-sbatch /gpfs/data/ris3/0_data/gisaid_20220926/run_slurm.sh /gpfs/data/ris3/PATH/TO/SEQUENCE/DATA
+sbatch run_slurm.sh /ABSOLUTE/PATH/TO/SEQUENCE/DATA/covid_sequences.fasta
 ```  
-Results will be produced in ```/gpfs/data/ris3/3_results/${YYYYMMDD}```
+Results will be produced in ```/covid19_analysis/3_results/${YYYYMMDD}```
 
-A run with ~20,000 input sequences takes roughly 8 hours to complete
+A run with ~20,000 input sequences takes roughly 30 minutes to complete the primary pangolin analyses and produce figures, however the IQ-tree will run for several days. 
 
   
 ## Running Pipeline via Oscar Interactive Session
@@ -23,28 +25,28 @@ To run thie pipeline in an interact session, first enter a screen `screen -S JOB
   
 Navigate to the `1_scripts` directory:  
 ```
-cd /gpfs/data/ris3/1_scripts
+cd /PATH/TO/CLONED/REPO/covid19_analysis/1_scripts
 ```
   
 Enter the singularity container and mount the parent directory:
 
 ```
-singularity exec -B /gpfs/data/ris3/ /gpfs/data/ris3/1_scripts/covid12162022_latest.sif bash 
+singularity exec -B /ABSOLUTE/PATH/TO/CLONED/REPO/covid19_analysis/ /PATH/TO/CLONED/REPO/covid19_analysis/1_scripts/covid19.sif bash 
 ```  
 
 Once inside the container, run:
 
 ``` 
-bash run.sh /gpfs/data/ris3/PATH/TO/SEQUENCE/DATA
+bash run.sh /ABSOLUTE/PATH/TO/SEQUENCE/DATA/covid_sequences.fasta
 ```
 
 To leave the screen use `ctl + a + d` and to return use `screen -r JOBNAME`  
   
-Results will be produced in `/gpfs/data/ris3/3_results/${YYYYMMDD}`
+Results will be produced in `/PATH/TO/CLONED/REPO/covid19_analysis/3_results/${YYYYMMDD}`
 
 ## Example Usage
 ```
-sbatch /gpfs/data/ris3/0_data/gisaid_20220926/run_slurm.sh /gpfs/data/ris3/0_data/gisaid_20220926/sequenceData.fasta
+sbatch /PATH/TO/CLONED/REPO/covid19_analysis/1_scripts/run_slurm.sh /PATH/TO/CLONED/REPO/covid19_analysis/0_data/sequenceData.fasta
 ```
 
 # CBC Project Information
