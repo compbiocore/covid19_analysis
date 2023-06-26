@@ -5,7 +5,7 @@
  * **0_data:** is an empty directory in which to download sequneces and metadata from GISAID for analyses.
  * **1_scripts:** contains shell scripts to run the pipeline as reflected in ```/covid19_analysis/1_scripts``` the singularity image can be pulled directly to oscar or your local machine using ```singularity pull covid19.sif docker://ericsalomaki/covid_new_pango:05092023``` from the `1_scripts` directory.
  * **2_metadata:** contains the ```Dockerfile``` that was used to create the container for running the pipeline, a GFF file, QC rules file, and the reference fasta file and genbank file.
- * **_3_results** will be created while the pipeline is running and results will be written to ```/covid19_analysis/3_results/${YYYYMMDD}```
+ * **3_results** will be created while the pipeline is running and results will be written to ```/covid19_analysis/3_results/${YYYYMMDD}```
 
 
 ## Running Pipeline via Oscar Slurm Batch Submission  
@@ -52,11 +52,11 @@ sbatch /PATH/TO/CLONED/REPO/covid19_analysis/1_scripts/run_slurm.sh /PATH/TO/CLO
 # CBC Project Information
 
 ```
-title: Covid19 docker container
+title: Covid19 analysis pipeline
 tags:
 analysts:
-git_repo_url:
-resources_used: Pangolin, Nextclade, Nextalign
+git_repo_url: https://github.com/compbiocore/covid19_analysis
+resources_used: Pangolin, Nextclade, Nextalign, IQ-Tree, R
 summary: 
 project_id:
 ```
