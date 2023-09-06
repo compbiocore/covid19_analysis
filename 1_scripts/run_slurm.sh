@@ -7,4 +7,4 @@
 
 pth=$(cd ../ && pwd)
 
-singularity exec -B /gpfs/data/ris3/ ${pth}/1_scripts/covid_new_pango.sif bash run.sh $1
+singularity exec -B /oscar/data/ris3/ ${pth}/1_scripts/covid_new_pango.sif bash run.sh $1
