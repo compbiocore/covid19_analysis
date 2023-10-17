@@ -1,0 +1,46 @@
+WHO_lineage	lineage	Country_first_detected	mutations	First_detected	Impact_on_transmissibility	Impact_on_immunity	Impact_on_severity	Transmission_in_EU
+Alpha	B.1.1.7	United Kingdom	"N501Y, D614G, P681H"	Sep-20	Increased (v) (23)	Similar	"Increased (v) (23, 24)"	Drastically reduced circulation in the EU/EEA following the emergence of Delta; little evidence of impact on vaccine induced immunity
+Epsilon	B.1.427	USA	"L452R, D614G"	Sep-20	Unclear (27)	Increased (v) (27)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA and available data indicating that vaccines and treatments are effective against such variant
+Epsilon	B.1.429	USA	"L452R, D614G"	Sep-20	Unclear (27)	Increased (v) (27)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA and available data indicating that vaccines and treatments are effective against such variant
+n/a	B.1.616	France	"V483A, D614G, H655Y, G669S"	Feb-21	Detection (c) (28)	No evidence	No evidence	Not detected since 2021-04-23 (29)
+Eta	B.1.525	Nigeria	"E484K, D614G, Q677H"	Dec-20	No evidence	"Increased (m) (25, 30)"	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+Theta	P.3	The Philippines	"E484K, N501Y, D614G, P681H"	Jan-21	Increased (m) (23)	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+Kappa	B.1.617.1	India	"L452R, E484Q, D614G, P681R"	Dec-20	Increased (v) (31)	Increased (v) (32-35)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	B.1.620	Unclear (b)	"S477N, E484K, D614G, P681H"	Feb-21	No evidence	"Increased (m) (25, 36)"	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	B.1.617.3	India	"L452R, E484Q, D614G, P681R"	Feb-21	Increased (m) (23)	"Increased (m) (25, 27)"	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	B.1.214.2	Unclear2	"Q414K, N450K, D614G"	Dec-20	No evidence	No evidence	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	A.27	Unclear (b)	"L452R, N501Y, A653V, H655Y"	Dec-20	Increased (m) (23)	Increased (m) (27)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	A.28	Unclear (b)	"E484K, N501T, H655Y"	Dec-20	No evidence	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	C.16	Unclear (b)	"L452R, D614G"	Oct-20	No evidence	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+Iota	B.1.526	USA	"E484K, D614G, A701V"	Dec-20	No evidence	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	B.1.526.1	USA	"L452R, D614G"	Oct-20	No evidence	Increased (m) (27)	No evidence	Lineage withdrawn from Pango
+n/a	B.1.526.2	USA	"S477N, D614G"	Dec-20	No evidence	No evidence	No evidence	Lineage withdrawn from Pango
+Zeta	P.2	Brazil	"E484K, D614G"	Jan-21	No evidence	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	B.1.1.519	Mexico	"T478K, D614G"	Nov-20	No evidence	Increased (m) (27)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	AV.1	United Kingdom	"N439K, E484K, D614G, P681H"	Mar-21	No evidence	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	AT.1	Russian Federation	"E484K, D614G, N679K"	Jan-21	No evidence	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+Mu	B.1.621	Colombia	"R346K, E484K, N501Y, D614G, P681H"	Jan-21	Increased (m) (23)	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+Lambda	C.37	Peru	"L452Q, F490S, D614G"	Dec-20	No evidence	"Increased (v) (44, 45)"	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	AY.4.2	United Kingdom	"L452R, T478K, D614G, P681R, A222V, Y145H"	Jun-21	Increased (v) (46)	"Similar (v) (46, 47)"	Similar (v) (46)	Delta sub-lineages will continue to be monitored within Delta VOC
+n/a	B.1.1.318	Unclear (b)	"E484K, D614G, P681H"	Jan-21	No evidence	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	C.1.2	South Africa	"D614G, E484K, H655Y, N501Y, N679K, Y449H"	Jun-21	Increased (m) (23)	Increased (m) (25)	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+Beta	B.1.351	South Africa	"K417N, E484K, N501Y, D614G, A701V"	Sep-20	Increased (v) (37)	"Increased (v) (38, 39)"	"Increased (v) (23, 40)"	No longer detected or detected at extremely low levels in the EU/EEA
+Gamma	P.1	Brazil	"K417T, E484K, N501Y, D614G, H655Y"	Dec-20	Increased (v) (48)	Increased (v) (49)	Increased (v) (23)	No longer detected or detected at extremely low levels in the EU/EEA
+n/a	B.1.640	The Republic of Congo	"D614G, F490R, N394S, N501Y, P681H, R346S, Y449N, 137-, 138-, 139-, 140-, 141-, 142-, 143-, 144-, 145-"	Sep-21	No evidence	No evidence	No evidence	No longer detected or detected at extremely low levels in the EU/EEA
+Delta	B.1.617.2	India	"L452R, T478K, D614G, P681R"	Dec-20	Increased (v) (50)	Increased (v) (51-53)	"Increased (v) (52, 54)"	Detected at extremely low levels in the EU/EEA
+Omicron	BA.1	South Africa and Botswana	"A67V, 69-, 70-, T95I, G142D, 143-, 144-, 145-, N211I, 212-, G339D, S371L, S373P, S375F, K417N, N440K, G446S, S477N, T478K, E484A, Q493R, G496S, Q498R, N501Y, Y505H, T547K, D614G, H655Y, N679K, P681H, N764K, D796Y, N856K, Q954H, N969K, L981F"	Nov-21	"Increased (v) (1, 55)"	"Increased (v) (3,56,57)"	Reduced (v) (58-60)	Detected at extremely low levels in the EU/EEA
+Omicron	BA.3	South Africa	"A67V, 69-, 70-, 143-, 144-, 145-, N211I, 212-, G339D, S371F, S373P, S375F, D405N, K417N, N440K, G446S, S477N, T478K, E484A, Q493R, Q498R, N501Y, Y505H, D614G, H655Y, N679K, P681H, D796Y, Q954H, N969K"	Nov-21	No evidence	No evidence	No evidence	Detected at extremely low levels in the EU/EEA
+Omicron	BA.2.3.20	n/a	"K444R, L452M, N460K"	n/a	No evidence	No evidence	No evidence	Detected at extremely low levels in the EU/EEA
+Omicron	BF.7	n/a	"R346T, F486V"	n/a	No evidence	No evidence	No evidence	Detected at extremely low levels in the EU/EEA
+Omicron	BA.2	South Africa	"G142D, N211I, 212-, V213G, G339D, S371F, S373P, S375F, T376A, D405N, R408S, K417N, N440K, S477N, T478K, E484A, Q493R, Q498R, N501Y, Y505H, D614G, H655Y, N679K, P681H, N764K, D796Y, Q954H, N969K"	Nov-21	"Increased (v) (1, 2)"	Increased (v) (3)	"Reduced (v) (4, 5)"	"Parental lineages are no longer circulating, ECDC monitoring sub-lineages in circulation"
+Omicron	BA.4	South Africa	"L452R, F486V, R493Q"	Jan-22	No evidence	"Increased (6, 7)"	No evidence	"Parental lineages are no longer circulating, ECDC monitoring sub-lineages in circulation"
+Omicron	BA.5	South Africa	"L452R, F486V, R493Q"	Feb-22	No evidence	"Increased (6, 7)"	Unclear (8)	"Parental lineages are no longer circulating, ECDC monitoring sub-lineages in circulation"
+Omicron	XBC	n/a	"N440K, F486P"	n/a	No evidence	No evidence	No evidence	Detected (a)
+Omicron	BN.1	n/a	"R346T, K356T, F490S,"	n/a	No evidence	No evidence	No evidence	Detected (a)
+Omicron	XAY	n/a	F486P	n/a	No evidence	No evidence	No evidence	Detected (a)
+Omicron	CH.1.1	n/a	"K444T, L452R"	n/a	No evidence	No evidence	No evidence	Detected (a)
+Omicron	XBB.1.16	n/a	"E180V, T478R, F486P"	n/a	No evidence	No evidence	No evidence	Detected (a)
+Omicron	BA.2.75	India	"W152R, F157L, I210V, G257S, D339H, G446S, N460K, Q493"	May-22	Unclear (9)	Similar to Baseline (10-12)	No evidence	Community
+Omicron	BQ.1	n/a	"K444T, N460K"	n/a	Baseline (13)	"Baseline (10, 11, 14-16)"	Baseline (17)	Community
+Omicron	XBB	n/a	"N460K, F490S"	n/a	"Similar to Baseline (13,18)"	"Increased (v) (10, 11, 15, 19)"	No evidence	Community
+Omicron	XBB.1.5	United States	"N460K, S486P, F490S"	n/a	"Increased (13, 20)"	"Increased (v) (13, 21)"	Similar to Baseline (22)	Dominant
