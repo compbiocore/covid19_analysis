@@ -1,0 +1,15 @@
+site_name:        Computational Biology Core - Brown University
+site_author:      Paul Cao and Eric Salomaki
+repo_url:         https://github.com/compbiocore/covid19_analysis
+site_description: Documentation for running Covid19 Analysis Workflow
+site_url:         https://compbiocore.github.io/covid19_analysis
+google_analytics: ['UA-115983496-2', 'compbiocore.github.io']
+
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    primary: 'blue grey'
+    accent: 'indigo'
+  logo: assets/images/cbc.svg
