@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Running Workflow via Nextflow - My Docs</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Running Workflow via Nextflow";
+        var mkdocs_page_input_path = "workflow.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Running Workflow on OSCAR</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Running Workflow via Nextflow</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-check-out-github-repo">1. Check out Github repo</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-install-nextflow-and-singularity">2. Install Nextflow and Singularity</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#option-a-on-any-computing-environment">Option A: On Any Computing Environment</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#option-b-on-brown-oscar-computing-environment">Option B: On Brown OSCAR Computing Environment</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#running-the-nextflow-workflow">Running the Nextflow Workflow</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#output-directory">Output Directory</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#output-1-gisaid-sequence-files-and-metadata">Output 1: GISAID Sequence Files and Metadata</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#output-2-analysis-files">Output 2: Analysis Files</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Running Workflow via Nextflow</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="running-workflow-via-nextflow">Running Workflow via Nextflow</h1>
+<p>The following documentation details on how to run the Covid19 analysis pipeline using Nextflow on any computing environment.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="1-check-out-github-repo">1. Check out Github repo</h3>
+<p>First, check out the Github repo:</p>
+<pre><code class="language-commandline">git clone https://github.com/compbiocore/covid19_analysis.git
+</code></pre>
+<h3 id="2-install-nextflow-and-singularity">2. Install Nextflow and Singularity</h3>
+<h4 id="option-a-on-any-computing-environment">Option A: On Any Computing Environment</h4>
+<p>If you do not have Singularity already; you can install it by referring to the <a href="https://docs.sylabs.io/guides/3.0/user-guide/installation.html">Singularity installation guide</a> here.</p>
+<p>If you do not have Nextflow already; you can install it by referring to the <a href="https://www.nextflow.io/docs/latest/getstarted.html#installation">Nextflow installation guide</a> here.</p>
+<p>After installing Singularity, ensure that in your Nextflow configuration file, you have enabled Singularity in Nextflow. You can refer to the <a href="https://www.nextflow.io/docs/edge/container.html#id24">Singularity configuration guide</a> here; or in another words, add the following block in the <code>nextflow.config</code> file that Nextflow is sourcing:</p>
+<pre><code class="language-commandline">...
+singularity {
+    enabled = true
+}
+</code></pre>
+<h4 id="option-b-on-brown-oscar-computing-environment">Option B: On Brown OSCAR Computing Environment</h4>
+<p>If you are on Brown OSCAR computing environment, you can simply install Nextflow and Singularity computing environment by following the <a href="https://github.com/compbiocore/workflows_on_OSCAR">set up instructions here</a>. And then to initialize the Nextflow environment, simply type in:</p>
+<pre><code class="language-commandline">nextflow_start
+</code></pre>
+<h2 id="running-the-nextflow-workflow">Running the Nextflow Workflow</h2>
+<p>Once you have finished installing (or already have the requisites satisfied), you can run the Nextflow pipeline with the following command:</p>
+<pre><code>cd $PROJECT_REPO
+nextflow run $PROJECT_REPO/workflows/covid19.nf \
+--output_dir $OUTPUT_DIR --username $GISAID_USER --password='$GISAID_PASSWORD' \
+--project_github $PROJECT_REPO
+</code></pre>
+<h2 id="output-directory">Output Directory</h2>
+<p>Below is a brief walk-through and explaination of all the workflow workproducts: </p>
+<h4 id="output-1-gisaid-sequence-files-and-metadata">Output 1: GISAID Sequence Files and Metadata</h4>
+<p>In <code>$OUTPUT_DIR/gisaid</code>:
+ - <code>gisaid.fasta</code>, the sequence containing for all sequences downloaded from GISAID given a certain geolocation (e.g., USA/Rhode Island). 
+ - <code>gisaid.csv</code>, the GISAID metadata file for all the sequences given the certain geolocation
+ - <code>sra_run.txt</code>, all of the SRA id's linked to the GISAID sequences in this workflow. </p>
+<h4 id="output-2-analysis-files">Output 2: Analysis Files</h4>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Running Workflow on OSCAR"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
