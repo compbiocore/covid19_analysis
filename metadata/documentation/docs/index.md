@@ -1,5 +1,7 @@
 # Running Workflow on OSCAR
 
+The following documentation details on how to run the Covid19 analysis pipeline specifically on Brown's Oscar cluster.
+
 ## Directory Structure
 
  * **0_data:** is an empty directory in which to download sequneces and metadata from GISAID for analyses.
