@@ -1,0 +1,9 @@
+repo: covid19_analysis
+site_name:        Covid19 Analysis Pipeline
+authors:
+  - name: Paul Cao and Eric Salomaki
+    github_user: paulcao-brown
+repo_url:         https://github.com/compbiocore/covid19_analysis
+site_description: "A complete pipeline that aggregates all of the publicly available covid19 sequences from GISAID collected in Rhode Island; and run a complete genomic analysis pipeline that will plot/calculate phylogenetic lineages of all the included sequences, distribution of major variant of concern and of the major spike protein variant mutation on a monthly basis during the pandemic."
+docs_url: https://compbiocore.github.io/covid19_analysis/
+type: software
