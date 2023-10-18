@@ -48,7 +48,14 @@ nextflow run $PROJECT_REPO/workflows/covid19.nf \
 
 ## Output Directory
 
+Below is a brief walk-through and explaination of all the workflow workproducts: 
+
 #### Output 1: GISAID Sequence Files and Metadata
+
+In `$OUTPUT_DIR/gisaid`:
+ - `gisaid.fasta`, the sequence containing for all sequences downloaded from GISAID given a certain geolocation (e.g., USA/Rhode Island). 
+ - `gisaid.csv`, the GISAID metadata file for all the sequences given the certain geolocation
+ - `sra_run.txt`, all of the SRA id's linked to the GISAID sequences in this workflow. 
 
 #### Output 2: Analysis Files
 
