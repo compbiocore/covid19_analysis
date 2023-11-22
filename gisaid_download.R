@@ -11,8 +11,9 @@ library('collections')
 #login into GISAID
 username <- Sys.getenv("GISAIDR_USERNAME")
 password <- Sys.getenv("GISAIDR_PASSWORD")
+state <- Sys.getenv("GISAIDR_STATE")
 credentials <- login(username = username, password = password)
-df_ids <- GISAIDR::query(credentials = credentials, location = "North America / USA / Rhode Island", nrows = 50000, fast = TRUE)
+df_ids <- GISAIDR::query(credentials = credentials, location = paste("North America / USA / ", state, sep=""), nrows = 50000, fast = TRUE)
 
 #download the dataframe
 gisaid_id_split <- split(df_ids$accession_id, ceiling(seq_along(df_ids$accession_id) / 3000))
