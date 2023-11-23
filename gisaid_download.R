@@ -11,9 +11,9 @@ library('collections')
 #login into GISAID
 username <- Sys.getenv("GISAIDR_USERNAME")
 password <- Sys.getenv("GISAIDR_PASSWORD")
-state <- Sys.getenv("GISAIDR_STATE")
-state_abbr <- tolower(state.abb[grep(state, state.name)])
-location <- paste("North America / USA / ", state, sep="")
+state_name <- Sys.getenv("GISAIDR_STATE")
+state_abbr <- tolower(state.abb[grep(state_name, state.name)])
+location <- paste("North America / USA / ", state_name, sep="")
 credentials <- login(username = username, password = password)
 df_ids <- GISAIDR::query(credentials = credentials, location = location, nrows = 50000, fast = TRUE)
 
