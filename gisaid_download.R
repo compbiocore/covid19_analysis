@@ -12,8 +12,10 @@ library('collections')
 username <- Sys.getenv("GISAIDR_USERNAME")
 password <- Sys.getenv("GISAIDR_PASSWORD")
 state <- Sys.getenv("GISAIDR_STATE")
+state_abbr <- tolower(state.abb[grep(state, state.name)])
+location <- paste("North America / USA / ", state, sep="")
 credentials <- login(username = username, password = password)
-df_ids <- GISAIDR::query(credentials = credentials, location = paste("North America / USA / ", state, sep=""), nrows = 50000, fast = TRUE)
+df_ids <- GISAIDR::query(credentials = credentials, location = location, nrows = 50000, fast = TRUE)
 
 #download the dataframe
 gisaid_id_split <- split(df_ids$accession_id, ceiling(seq_along(df_ids$accession_id) / 3000))
@@ -113,9 +115,11 @@ for (i in id_split) {
 }
 
 df <-  read.csv("gisaid.csv")
-df <- df %>% separate(strain, sep="/", into = c(NA, NA, "ri_library", NA), remove=FALSE)
-merged_df = merge(x = df, y = total_df, by.x = "ri_library", by.y="ri_library", all.x = TRUE)
-merged_df <- dplyr::select(merged_df, -c(ri_library))
+# TODO: fix abbreviations in state selection
+state_lib = paste(state_abbr, "library", sep="_")
+df <- df %>% separate(strain, sep="/", into = c(NA, NA, state_lib, NA), remove=FALSE)
+merged_df = merge(x = df, y = total_df, by.x = state_lib, by.y=state_lib, all.x = TRUE)
+merged_df <- dplyr::select(merged_df, -c(state_lib))
 
 write.csv(merged_df, "gisaid.csv", row.names=FALSE, quote=TRUE)
 write.table(merged_df, "gisaid.tsv", row.names=FALSE, quote=TRUE, sep="\t")
