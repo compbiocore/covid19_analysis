@@ -14,6 +14,9 @@ password <- Sys.getenv("GISAIDR_PASSWORD")
 state_name <- Sys.getenv("GISAIDR_STATE")
 state_abbr <- tolower(state.abb[grep(state_name, state.name)])
 location <- paste("North America / USA / ", state_name, sep="")
+print(state_name)
+print(state_abbr)
+print(location)
 credentials <- login(username = username, password = password)
 df_ids <- GISAIDR::query(credentials = credentials, location = location, nrows = 50000, fast = TRUE)
 
@@ -54,6 +57,7 @@ id_split <- split(combined_ids, ceiling(seq_along(combined_ids) / 200))
 
 total_ri_ids <- list()
 total_df <- NULL
+state_lib <- paste(state_abbr, "library", sep="_")
 for (i in id_split) {
   first_ids <- paste(i, collapse=',')
   url <- paste('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=sra&id=', first_ids, sep='')
@@ -103,7 +107,7 @@ for (i in id_split) {
 
   biosample_host_subject_ids <- biosample_host_subject_ids <- vector("character" , length(biosample_ids))
   df = data.frame(unlist(ri_ids),unlist(ri_run_names),unlist(biosample_ids), unlist(biosample_host_subject_ids))
-  names(df) = c("ri_library","sra_run","sra_biosample", "sra_biosample_host_subject_id")
+  names(df) = c(state_lib,"sra_run","sra_biosample", "sra_biosample_host_subject_id")
 
   if (is.null(total_df)) {
     total_df = df
@@ -115,14 +119,24 @@ for (i in id_split) {
 }
 
 df <-  read.csv("gisaid.csv")
-# TODO: fix abbreviations in state selection
-state_lib = paste(state_abbr, "library", sep="_")
-df <- df %>% separate(strain, sep="/", into = c(NA, NA, state_lib, NA), remove=FALSE)
-merged_df = merge(x = df, y = total_df, by.x = state_lib, by.y=state_lib, all.x = TRUE)
-merged_df <- dplyr::select(merged_df, -c(state_lib))
+if (state_name == "Rhode Island"){
+  print("RI merge call exe")
+  # TODO: fix abbreviations in state selection
 
-write.csv(merged_df, "gisaid.csv", row.names=FALSE, quote=TRUE)
-write.table(merged_df, "gisaid.tsv", row.names=FALSE, quote=TRUE, sep="\t")
+  # TODO: skip if not RI
+  df <- df %>% separate(strain, sep="/", into = c(NA, NA, state_lib, NA), remove=FALSE)
+
+  merged_df = merge(x = df, y = total_df, by.x = state_lib, by.y=state_lib, all.x = TRUE)
+  merged_df <- dplyr::select(merged_df, -c(state_lib))
+
+  write.csv(merged_df, "gisaid.csv", row.names=FALSE, quote=TRUE)
+  write.table(merged_df, "gisaid.tsv", row.names=FALSE, quote=TRUE, sep="\t")
+} else {
+  print("Other state merge call exe")
+  write.table(df, "gisaid.tsv", row.names=FALSE, quote=TRUE, sep="\t")
+}
+#### end
+print("Successfully passed the merge call")
 
 #combine fasta file
 system("cat *.fasta > gisaid.fasta")
