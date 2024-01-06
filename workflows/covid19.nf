@@ -4,6 +4,8 @@ nextflow.enable.dsl=2
 params.download_reads = false
 params.run_analysis = true
 params.state = 'Rhode Island'
+username = secrets.GISAID_USERNAME
+password = secrets.GISAID_PASSWORD
 
 process downloadGISAID {
   container 'cowmoo/covid_pipeline:latest'
@@ -17,8 +19,8 @@ process downloadGISAID {
 
   script:
     """
-    export GISAIDR_USERNAME='${params.username}'
-    export GISAIDR_PASSWORD='${params.password}'
+    export GISAIDR_USERNAME='${username}'
+    export GISAIDR_PASSWORD='${password}'
     export GISAIDR_STATE='${params.state}'
     Rscript /data/gisaid_download.R
     """
