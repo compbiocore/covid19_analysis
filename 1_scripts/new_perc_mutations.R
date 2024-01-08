@@ -167,8 +167,11 @@ ggplot(percent_mut_per_month_start_2021) +
         legend.text = element_text(size = 18))
 #  legend.position="top")
 
+state_name <- Sys.getenv("GISAIDR_STATE")
+state_abbr <- state.abb[grep(state_name, state.name)]
+f_name <- paste("/Fig_Percent_", state_abbr, "_Spike_protein_mutations_by_month_", sep="")
 
-f_out <- paste0(pth , "/3_results/", day , "/Fig_Percent_RI_Spike_protein_mutations_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+f_out <- paste0(pth , "/3_results/", day , f_name ,format(Sys.Date(),"%Y%b%d"),".png",sep = "")
 ggsave(f_out, device = "png",width = 18, height = 7, dpi = 300)
-f_out <- paste0(pth , "/3_results/", day , "/Fig_Percent_RI_Spike_protein_mutations_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste0(pth , "/3_results/", day , f_name,format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 18, height = 10, dpi = 300)

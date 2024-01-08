@@ -7,12 +7,12 @@ params.state = 'Rhode Island'
 
 
 process downloadGISAID {
-  container 'cowmoo/covid_pipeline:latest'
+  container 'klam20/gisaid_download:latest'
 
   publishDir "$params.out_dir/gisaid/", mode: 'copy', overwrite: false
 
   secret "GISAID_USERNAME"
-  secrets "GISAID_PASSWORD"
+  secret "GISAID_PASSWORD"
 
   output:
     path "gisaid.fasta", emit: fasta
@@ -21,8 +21,8 @@ process downloadGISAID {
 
   script:
     """
-    export GISAIDR_USERNAME='${\$GISAID_USERNAME}'
-    export GISAIDR_PASSWORD='${\$GISAID_PASSWORD}'
+    export GISAIDR_USERNAME=\$GISAID_USERNAME
+    export GISAIDR_PASSWORD=\$GISAID_PASSWORD
     export GISAIDR_STATE='${params.state}'
     Rscript /data/gisaid_download.R
     """
@@ -47,7 +47,8 @@ process runAnalysisPipeline {
         path "3_results/**"
 
     script:
-     """
+    """
+      export GISAIDR_STATE='${params.state}'
         set -e
 
         day=\$(date "+%Y%m%d")

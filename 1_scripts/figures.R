@@ -312,9 +312,13 @@ ggplot(percent_var_per_month) +
         legend.text = element_text(size = 18),
         legend.position="top")
 
-f_out <- paste0(pth, "/3_results/", day , "/Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+state_name <- Sys.getenv("GISAIDR_STATE")
+state_abbr <- state.abb[grep(state_name, state.name)]
+f_name <- paste("/Fig_Percent_", state_abbr, "variants_by_month_", sep="")
+
+f_out <- paste0(pth, "/3_results/", day , f_name,format(Sys.Date(),"%Y%b%d"),".png",sep = "")
 ggsave(f_out, device = "png",width = 18, height = 8, dpi = 300)
-f_out <- paste0(pth, "/3_results/", day , "/Fig_Percent_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_out <- paste0(pth, "/3_results/", day , f_name,format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 
 
@@ -335,9 +339,10 @@ ggplot(percent_var_per_month) +
         legend.text = element_text(size = 8),
         legend.position="top")
 
-f_out <- paste(pth , "/3_results/", day , "/Fig_Total_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
+f_name <- paste("/Fig_Total_", state_abbr, "_variants_by_month_", sep="")
+f_out <- paste(pth , "/3_results/", day , f_name,format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
-f_out <- paste(pth , "/3_results/", day , "/Fig_Total_RI_variants_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
+f_out <- paste(pth , "/3_results/", day , f_name,format(Sys.Date(),"%Y%b%d"),".png",sep = "")
 ggsave(f_out, device = "png",width = 12, height = 10, dpi = 300)
 
 # Figure 4: stacked bars with actual number but without non-VOC/non-VBM
@@ -367,6 +372,7 @@ ggplot(df_var_per_month) +
         legend.text = element_text(size = 8),
         legend.position="top")
 
+f_name <- paste("/Fig_VOC-VBM_in_", state_abbr, "_by_month_", sep="")
 f_out <- paste0(pth, "/3_results/", day , "/Fig_VOC-VBM_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".pdf",sep = "")
 ggsave(f_out, device = "pdf",width = 12, height = 10, dpi = 300)
 f_out <- paste0(pth, "/3_results/", day , "/Fig_VOC-VBM_in_RI_by_month_",format(Sys.Date(),"%Y%b%d"),".png",sep = "")
