@@ -21,8 +21,8 @@ process downloadGISAID {
 
   script:
     """
-    export GISAIDR_USERNAME=\$GISAID_USERNAME
-    export GISAIDR_PASSWORD=\$GISAID_PASSWORD
+    export GISAIDR_USERNAME="\${GISAID_USERNAME:-${params.username}}"
+    export GISAIDR_PASSWORD="\${GISAID_PASSWORD:-${params.password}}"
     export GISAIDR_STATE='${params.state}'
     Rscript /data/gisaid_download.R
     """
@@ -92,7 +92,7 @@ process runAnalysisPipeline {
         Rscript \${pth}/1_scripts/new_perc_mutations.R \${day} \${pth}
         rm \${pth}/3_results/\${day}/Rplots.pdf
         echo "Initial Analyses Complete, Running IQtree"
-     """
+    """
 }
 
 process downloadSRA {

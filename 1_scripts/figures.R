@@ -314,7 +314,7 @@ ggplot(percent_var_per_month) +
 
 state_name <- Sys.getenv("GISAIDR_STATE")
 state_abbr <- state.abb[grep(state_name, state.name)]
-f_name <- paste("/Fig_Percent_", state_abbr, "variants_by_month_", sep="")
+f_name <- paste("/Fig_Percent_", state_abbr, "_variants_by_month_", sep="")
 
 f_out <- paste0(pth, "/3_results/", day , f_name,format(Sys.Date(),"%Y%b%d"),".png",sep = "")
 ggsave(f_out, device = "png",width = 18, height = 8, dpi = 300)
